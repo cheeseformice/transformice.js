@@ -64,7 +64,6 @@ class PacketHandler {
 		this.bulle.on("error", async (err: Error) => {
 			this.emit("bulleConnectionError", err);
 			if (this.autoReconnect) {
-				await new Promise((r) => setTimeout(r, 5 * 1000));
 				this.restart();
 			}
 		});
