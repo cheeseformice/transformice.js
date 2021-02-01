@@ -1,6 +1,6 @@
-import { ByteArray } from "../utils";
-import { ChatCommunity, Gender } from "../enums";
 import Client from "../client";
+import { Game, Gender } from "../enums";
+import { ByteArray } from "../utils";
 import ChatPlayer from "./ChatPlayer";
 
 /** Represents a friend from the friend list */
@@ -14,6 +14,10 @@ export default class Friend extends ChatPlayer {
 	 */
 	gender: Gender;
 	/**
+	 * If the player has an avatar
+	 */
+	hasAvatar: boolean;
+	/**
 	 * If the player is the soulmate of the client
 	 */
 	isSoulmate: boolean;
@@ -26,9 +30,9 @@ export default class Friend extends ChatPlayer {
 	 */
 	isConnected: boolean;
 	/**
-	 * The community of the player
+	 * The game that the player is playing
 	 */
-	community: ChatCommunity;
+	game: Game;
 	/**
 	 * The room name of the player (if they are online)
 	 */
@@ -45,10 +49,11 @@ export default class Friend extends ChatPlayer {
 		super(client);
 		this.id = 0;
 		this.gender = 0;
+		this.hasAvatar = false;
 		this.isSoulmate = false;
 		this.hasAddedBack = false;
 		this.isConnected = false;
-		this.community = 0;
+		this.game = 0;
 		this.roomName = "";
 		this.lastConnection = 0;
 	}
@@ -62,13 +67,22 @@ export default class Friend extends ChatPlayer {
 		this.id = packet.readInt();
 		this.setCpName(packet.readUTF());
 		this.gender = packet.readByte();
-		packet.readInt(); // ?
+		this.hasAvatar = packet.readInt() != 0;
 		this.isSoulmate = isSoulmate;
 		this.hasAddedBack = packet.readBoolean();
 		this.isConnected = packet.readBoolean();
-		this.community = packet.readInt();
+		this.game = packet.readInt();
 		this.roomName = packet.readUTF();
 		this.lastConnection = packet.readInt();
 		return this;
+	}
+
+	/**
+	 * The player's avatar url
+	 */
+	get avatar() {
+		return "https://avatars.atelier801.com/" + (this.hasAvatar
+			? `${this.id % 10000}/${this.id}.jpg`
+			: "0/0.jpg");
 	}
 }
