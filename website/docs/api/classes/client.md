@@ -81,6 +81,14 @@ The language suggested by the server.
 
 ___
 
+### loginRoom
+
+•  **loginRoom**: string
+
+The room where the client will be logged in.
+
+___
+
 ### name
 
 •  **name**: string
@@ -410,16 +418,9 @@ ___
 
 ### run
 
-▸ **run**(`tfmid`: string, `token`: string): Promise<void\>
+▸ **run**(): Promise<void\>
 
 Starts the client.
-
-#### Parameters:
-
-Name | Type |
------- | ------ |
-`tfmid` | string |
-`token` | string |
 
 **Returns:** Promise<void\>
 

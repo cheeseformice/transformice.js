@@ -40,5 +40,5 @@ client.on("roomMessage", (message) => {
 	client.sendRoomMessage(message.author.look);
 });
 
-client.run("tfm_id", "token", );
+client.run();
 ```

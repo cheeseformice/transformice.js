@@ -18,6 +18,10 @@ interface ClientOptions {
 	 * Which community to log in to ([language enum](/docs/api/globals#languages))
 	 */
 	language?: ValueOf<typeof languages>;
+	/**
+	 * The room where the client will be logged in (Default: `1`)
+	 */
+	loginRoom?: string;
 }
 
 /**
@@ -108,6 +112,10 @@ class Client extends EventEmitter {
 	 */
 	language!: ValueOf<typeof languages>;
 	/**
+	 * The room where the client will be logged in.
+	 */
+	loginRoom!: string;
+	/**
 	 * The client's temporary code.
 	 */
 	pcode!: number;
@@ -117,6 +125,7 @@ class Client extends EventEmitter {
 
 		this.autoReconnect = options?.autoReconnect ?? true;
 		this.language = options?.language || languages.en;
+		this.loginRoom = options?.loginRoom || "1";
 		this.whoList = {};
 		this.channels = [];
 
@@ -241,7 +250,7 @@ class Client extends EventEmitter {
 
 	protected setSystemInfo(langue: string, sys: string, version: string) {
 		const p = new ByteArray().writeUTF(langue).writeUTF(sys).writeUTF(version);
-		this.main.send(identifiers.os, p);
+		this.main.send(identifiers.os, p.writeByte(0));
 	}
 
 	/**
@@ -260,18 +269,18 @@ class Client extends EventEmitter {
 				throw new Error("An internal error occur: " + result.internal_error_step);
 			}
 		} else {
-			throw new Error("Can't get the keys : " + result.error);
+			throw new Error("Can't get the IP : " + result.error);
 		}
 	}
 
 	/**
 	 * Log in to the game.
 	 */
-	private login(name: string, password: string, room = "1") {
+	private login(name: string, password: string, room: string) {
 		const p = new ByteArray().writeUTF(name).writeUTF(SHAKikoo(password));
 		p.writeUTF("app:/TransformiceAIR.swf/[[DYNAMIC]]/2/[[DYNAMIC]]/4").writeUTF(room);
 		p.writeByte(0).writeUTF("");
-		this.main.send(identifiers.loginSend, p);
+		this.main.send(identifiers.loginSend, p.writeByte(0));
 	}
 
 	/**
@@ -294,7 +303,7 @@ class Client extends EventEmitter {
 			try {
 				await this.waitFor("loginReady");
 				this.setLanguage(this.language);
-				this.login(this.name, this.password);
+				this.login(this.name, this.password, this.loginRoom);
 			} catch (err) {
 				this.main.emit("error", err);
 			}
@@ -310,7 +319,8 @@ class Client extends EventEmitter {
 				this.restart();
 			}
 		});
-		this.main.connect(this.host, this.ports[0]);
+		let ports = this.ports;
+		this.main.connect(this.host, ports[~~(Math.random() * ports.length)]);
 	}
 
 	/**

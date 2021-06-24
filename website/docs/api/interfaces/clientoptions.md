@@ -23,3 +23,11 @@ ___
 • `Optional` **language**: [ValueOf](../globals.md#valueof)<*typeof* languages\>
 
 Which community to log in to ([language enum](/docs/api/globals#languages))
+
+___
+
+### loginRoom
+
+• `Optional` **loginRoom**: string
+
+The room where the client will be logged in (Default: `1`)
