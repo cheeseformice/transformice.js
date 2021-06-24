@@ -1,5 +1,7 @@
 # Transformice.js (WIP)
 
+## This is a maintained fork of [SuspiciousLookingOwl's version](https://github.com/SuspiciousLookingOwl/transformice.js)
+
 NodeJs Client for Transformice with full Typescript support.
 
 [Read the docs](https://transformice-js.netlify.app/docs/) 
@@ -9,7 +11,7 @@ NodeJs Client for Transformice with full Typescript support.
 Clone the repository:
 
 ```
-git clone https://github.com/SuspiciousLookingOwl/transformice.js
+git clone https://github.com/cheeseformice/transformice.js
 ```
 
 Install dependencies:
