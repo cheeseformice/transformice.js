@@ -311,14 +311,3 @@ export const whisperStates = {
 	disabledPublic: 2,
 	disabledAll: 3,
 } as const;
-
-/**
- * The ids of the cipher method.
- *
- * @hidden
- */
-export const cipherMethods = {
-	none: 0,
-	xor: 1,
-	xxtea: 2,
-} as const;

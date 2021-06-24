@@ -29,9 +29,7 @@ class PacketHandler {
 		this.onlinePlayers = packet.readUnsignedInt();
 		packet.readUTF() as ValueOf<typeof languages>; // default language
 		packet.readUTF(); // country;
-		this.authServer = packet.readUnsignedInt();
-
-		this.setLanguage(this.language);
+		packet.readUnsignedInt(); // server auth key
 
 		this.setSystemInfo("en", "Linux", "LNX 29,0,0,140");
 		this.startHeartbeat();
@@ -62,7 +60,7 @@ class PacketHandler {
 
 		if (this.bulle && this.bulle.open) this.bulle.close();
 
-		this.bulle = new Connection(this.identificationKeys, this.messageKeys);
+		this.bulle = new Connection();
 		this.bulle.on("error", async (err: Error) => {
 			this.emit("connectionError", err);
 			if (this.autoReconnect) {

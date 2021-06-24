@@ -2,7 +2,7 @@ import net from "net";
 import { EventEmitter } from "events";
 
 import { ByteArray, ValueOf } from ".";
-import { cipherMethods, identifiers } from "../enums";
+import { identifiers } from "../enums";
 
 /**
  * Represents a client that connects to Transformice.
@@ -15,8 +15,6 @@ export default class Connection extends EventEmitter {
 	fingerprint: number;
 	buffer: Buffer;
 	length: number;
-	private identificationKeys: number[];
-	private messageKeys: number[];
 
 	/**
 	 * Constructor.
@@ -25,14 +23,12 @@ export default class Connection extends EventEmitter {
 	 * const conn = new Connection(client, 'connectionName');
 	 * ```
 	 */
-	constructor(identificationKeys: number[], messageKeys: number[]) {
+	constructor() {
 		super();
 		this.open = false;
 		this.fingerprint = 0;
 		this.buffer = Buffer.alloc(0);
 		this.length = 0;
-		this.identificationKeys = identificationKeys;
-		this.messageKeys = messageKeys;
 	}
 
 	/**
@@ -77,18 +73,11 @@ export default class Connection extends EventEmitter {
 	/**
 	 * Sends a packet to the connection.
 	 * @param {ByteArray} packet - The packet.
-	 * @param {enums.cipherMethod} [method=enums.cipherMethod.none] - The algorithm method to cipher the packet with it.
 	 */
 	send(
 		identifier: ValueOf<typeof identifiers>,
-		packet: ByteArray,
-		method: ValueOf<typeof cipherMethods> = cipherMethods.none
+		packet: ByteArray
 	) {
-		if (method === cipherMethods.xor) {
-			packet = packet.xorCipher(this.messageKeys, this.fingerprint);
-		} else if (method === cipherMethods.xxtea) {
-			packet = packet.blockCipher(this.identificationKeys);
-		}
 		packet = new ByteArray().writeUnsignedShort(identifier).writeBytes(packet);
 		const m = new ByteArray();
 		let size = packet.length;

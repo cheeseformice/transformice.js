@@ -3,7 +3,7 @@ import { EventEmitter } from "events";
 
 import { ByteArray, Connection, SHAKikoo, ValueOf } from "../utils";
 import { Room, RoomPlayer } from "../structures";
-import { tribulle, cipherMethods, identifiers, languages } from "../enums";
+import { tribulle, identifiers, languages } from "../enums";
 import PacketHandler from "./PacketHandler";
 import ClientEvents from "./Events";
 import TribullePacketHandler from "./TribullePacketHandler";
@@ -54,14 +54,9 @@ declare interface Client {
  * @noInheritDoc
  */
 class Client extends EventEmitter {
-	private version!: number;
-	private connectionKey!: string;
-	private authClient!: number;
 	protected authServer!: number;
 	protected ports!: number[];
 	private host!: string;
-	private tfmId!: string;
-	private token!: string;
 	protected identificationKeys!: number[];
 	protected messageKeys!: number[];
 	private main!: Connection;
@@ -208,7 +203,7 @@ class Client extends EventEmitter {
 		this.tribulleId = (this.tribulleId % 0x100000000) + 1;
 		const p = new ByteArray().writeShort(code).writeUnsignedInt(this.tribulleId);
 		p.writeBytes(packet);
-		this.main.send(identifiers.bulle, p, cipherMethods.xor);
+		this.main.send(identifiers.bulle, p);
 
 		return this.tribulleId;
 	}
@@ -225,18 +220,16 @@ class Client extends EventEmitter {
 		}, 1000 * 15);
 	}
 
-	private sendHandshake(version: number, key: string) {
+	private sendHandshake() {
 		const p = new ByteArray();
-		p.writeShort(version);
-		p.writeUTF("en");
-		p.writeUTF(key);
+		p.writeShort(666);
 		p.writeUTF("Desktop").writeUTF("-").writeInt(0x1fbd);
 		p.writeUTF("");
-		p.writeUTF("ca26ba3ada3fc0aadba7d94e5677bee000333d8f46bab4c3cb32e615587e7212");
+		p.writeUTF("74696720697320676f6e6e61206b696c6c206d7920626f742e20736f20736164");
 		p.writeUTF(
-			"A=t&SA=t&SV=t&EV=t&MP3=t&AE=t&VE=t&ACC=t&PR=t&SP=f&SB=f&DEB=f&V=LNX 29,0,0,140&M=Adobe Linux&R=1920x1080&COL=color&AR=1.0&OS=Linux&ARCH=x86&L=en&IME=t&PR32=t&PR64=t&LS=en-US&PT=Desktop&AVD=f&LFD=f&WD=f&TLS=t&ML=5.1&DP=72"
+			"A=t&SA=t&SV=t&EV=t&MP3=t&AE=t&VE=t&ACC=t&PR=t&SP=f&SB=f&DEB=f&V=LNX 32,0,0,182&M=Adobe Linux&R=1920x1080&COL=color&AR=1.0&OS=Linux&ARCH=x86&L=en&IME=t&PR32=t&PR64=t&LS=en-US&PT=Desktop&AVD=f&LFD=f&WD=f&TLS=t&ML=5.1&DP=72"
 		);
-		p.writeInt(0).writeInt(0x1234).writeUTF("");
+		p.writeInt(0).writeInt(0x6257).writeUTF("");
 		this.main.send(identifiers.handshake, p);
 	}
 
@@ -252,22 +245,15 @@ class Client extends EventEmitter {
 	}
 
 	/**
-	 * Get Transformice API keys
+	 * Get Transformice IP
 	 */
-	private async fetchKeys() {
-		const response = await fetch(
-			`https://api.tocuto.tk/get_transformice_keys.php?tfmid=${this.tfmId}&token=${this.token}`
-		);
+	private async fetchIP() {
+		const response = await fetch("https://api.tocuto.tk/tfm/get/ip");
 		const result = await response.json();
 		if (result.success) {
 			if (!result.internal_error) {
-				this.version = result.version;
-				this.connectionKey = result.connection_key;
-				this.ports = result.ports;
-				this.host = result.ip;
-				this.authClient = result.auth_key;
-				this.identificationKeys = result.identification_keys;
-				this.messageKeys = result.msg_keys;
+				this.ports = result.server.ports;
+				this.host = result.server.ip;
 			} else {
 				if (result.internal_error_step === 2)
 					throw new Error("The game might be in maintenance mode.");
@@ -284,10 +270,8 @@ class Client extends EventEmitter {
 	private login(name: string, password: string, room = "1") {
 		const p = new ByteArray().writeUTF(name).writeUTF(SHAKikoo(password));
 		p.writeUTF("app:/TransformiceAIR.swf/[[DYNAMIC]]/2/[[DYNAMIC]]/4").writeUTF(room);
-		p.writeUnsignedInt(
-			parseInt((BigInt(this.authServer) ^ BigInt(this.authClient)).toString())
-		);
-		this.main.send(identifiers.loginSend, p, cipherMethods.xxtea);
+		p.writeByte(0).writeUTF("");
+		this.main.send(identifiers.loginSend, p);
 	}
 
 	/**
@@ -295,13 +279,13 @@ class Client extends EventEmitter {
 	 */
 	private connect() {
 		if (this.main && this.main.open) return;
-		this.main = new Connection(this.identificationKeys, this.messageKeys);
+		this.main = new Connection();
 		this.main.on("data", (conn: Connection, packet: ByteArray) => {
 			this.handlePacket(conn, packet);
 		});
 		this.main.once("connect", async () => {
 			this.emit("connect", this.main);
-			this.sendHandshake(this.version, this.connectionKey);
+			this.sendHandshake();
 			this.once("loginError", async (code) => {
 				if (code === 1 && this.autoReconnect) {
 					this.restart();
@@ -309,6 +293,7 @@ class Client extends EventEmitter {
 			});
 			try {
 				await this.waitFor("loginReady");
+				this.setLanguage(this.language);
 				this.login(this.name, this.password);
 			} catch (err) {
 				this.main.emit("error", err);
@@ -346,11 +331,8 @@ class Client extends EventEmitter {
 	/**
 	 * Starts the client.
 	 */
-	async run(tfmid: string, token: string) {
-		this.tfmId = tfmid;
-		this.token = token;
-
-		await this.fetchKeys();
+	async run() {
+		await this.fetchIP();
 		this.connect();
 	}
 
@@ -441,11 +423,7 @@ class Client extends EventEmitter {
 	 * Sends a message to the client's room.
 	 */
 	sendRoomMessage(message: string) {
-		this.bulle.send(
-			identifiers.roomMessage,
-			new ByteArray().writeUTF(message),
-			cipherMethods.xor
-		);
+		this.bulle.send(identifiers.roomMessage, new ByteArray().writeUTF(message));
 	}
 
 	/**
@@ -458,7 +436,7 @@ class Client extends EventEmitter {
 	 * ```
 	 */
 	sendCommand(message: string) {
-		this.main.send(identifiers.command, new ByteArray().writeUTF(message), cipherMethods.xor);
+		this.main.send(identifiers.command, new ByteArray().writeUTF(message));
 	}
 
 	/**
