@@ -28,6 +28,7 @@ sidebar_label: "Globals"
 
 * [ClientEvents](interfaces/clientevents.md)
 * [ClientOptions](interfaces/clientoptions.md)
+* [RoomJoinOptions](interfaces/roomjoinoptions.md)
 
 ### Type aliases
 

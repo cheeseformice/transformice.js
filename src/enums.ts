@@ -35,6 +35,7 @@ export const identifiers = {
 	os: Identifier(28, 17),
 	fingerprint: Identifier(44, 22),
 	room: Identifier(5, 38),
+	roomPassworded: Identifier(5, 39),
 	roomList: Identifier(26, 35),
 	roomMessage: Identifier(6, 6),
 	roomChange: Identifier(5, 21),

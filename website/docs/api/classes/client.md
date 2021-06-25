@@ -173,7 +173,7 @@ ___
 
 ### enterRoom
 
-▸ **enterRoom**(`name`: string, `options`: { auto?: boolean ; community?: number ; password?: string  }): void
+▸ **enterRoom**(`name`: string, `options`: [RoomJoinOptions](../interfaces/roomjoinoptions.md)): void
 
 Sends a request to the server to join a room with specific name.
 
@@ -182,7 +182,7 @@ Sends a request to the server to join a room with specific name.
 Name | Type |
 ------ | ------ |
 `name` | string |
-`options` | { auto?: boolean ; community?: number ; password?: string  } |
+`options` | [RoomJoinOptions](../interfaces/roomjoinoptions.md) |
 
 **Returns:** void
 

@@ -24,6 +24,22 @@ interface ClientOptions {
 	loginRoom?: string;
 }
 
+interface RoomJoinOptions {
+	/**
+	 * Lets the server decide which room to join. (Default: `false`)
+	 */
+	auto?: boolean;
+	/**
+	 * The community of the room to join.
+	 */
+	language?: ValueOf<typeof languages>;
+	/**
+	 * The password of the room to join.
+	 * If given, `language` and `auto` parameters are ignored.
+	 */
+	password?: string;
+}
+
 /**
  * Client interface for event intellisense support
  */
@@ -452,20 +468,23 @@ class Client extends EventEmitter {
 	/**
 	 * Sends a request to the server to join a room with specific name.
 	 */
-	enterRoom(name: string, options: { auto?: boolean; community?: number; password?: string }) {
-		options = {
-			auto: false,
-			password: undefined,
-			...options,
-		};
-
-		this.main.send(
-			identifiers.room,
-			new ByteArray()
-				.writeUTF("")
-				.writeUTF(name)
-				.writeBoolean(options.auto ?? false)
-		);
+	enterRoom(name: string, options: RoomJoinOptions) {
+		if (options.password) {
+			this.main.send(
+				identifiers.roomPassworded,
+				new ByteArray()
+					.writeUTF(options.password)
+					.writeUTF(name)
+			);
+		} else {
+			this.main.send(
+				identifiers.room,
+				new ByteArray()
+					.writeUTF(options.language ?? this.language)
+					.writeUTF(name)
+					.writeBoolean(options.auto ?? false)
+			);
+		}
 	}
 
 	/**

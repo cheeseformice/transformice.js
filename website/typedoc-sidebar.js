@@ -27,7 +27,8 @@ module.exports = [
     "label": "Interfaces",
     "items": [
       "api/interfaces/clientevents",
-      "api/interfaces/clientoptions"
+      "api/interfaces/clientoptions",
+      "api/interfaces/roomjoinoptions"
     ]
   }
 ];
