@@ -20,8 +20,8 @@ export default class ByteArray {
 		this.buffer = Buffer.isBuffer(buff)
 			? buff
 			: Array.isArray(buff)
-			? Buffer.from(buff)
-			: Buffer.alloc(0);
+				? Buffer.from(buff)
+				: Buffer.alloc(0);
 		this.writePosition = this.buffer.length;
 		this.readPosition = 0;
 	}
@@ -86,6 +86,15 @@ export default class ByteArray {
 	 */
 	readByte() {
 		return this.buffer.readInt8(this.readPosition++);
+	}
+
+	/**
+	 * Reads a buffer of bytes, specified by the length parameter, from the byte stream.
+	 */
+	readBufBytes(length: number) {
+		const value = this.buffer.subarray(this.readPosition, this.readPosition + length);
+		this.readPosition += length;
+		return value;
 	}
 
 	/**
@@ -181,6 +190,13 @@ export default class ByteArray {
 	}
 
 	/**
+	 * Writes a sequence of bytes from the specified buffer into the byte stream.
+	 */
+	writeBufBytes(data: Buffer) {
+		return this.write(data);
+	}
+
+	/**
 	 * Writes a 32-bit signed integer to the byte stream.
 	 */
 	writeInt(value: number) {
@@ -256,9 +272,9 @@ export default class ByteArray {
 								((BigInt(sum) ^ BigInt(y)) +
 									(BigInt(
 										k[
-											parseInt(
-												((BigInt(p) & BigInt(3)) ^ BigInt(e)).toString()
-											)
+										parseInt(
+											((BigInt(p) & BigInt(3)) ^ BigInt(e)).toString()
+										)
 										]
 									) ^
 										BigInt(z))))) &
