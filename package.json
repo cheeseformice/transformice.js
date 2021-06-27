@@ -1,5 +1,5 @@
 {
-	"name": "transformice.js",
+	"name": "@cheeseformice/transformice.js",
 	"version": "1.0.0-beta.1",
 	"description": "Node.js client for Transformice with full Typescript support.",
 	"main": "dist/index.js",
@@ -12,7 +12,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/SuspiciousLookingOwl/transformice.js.git"
+		"url": "git+https://github.com/Cheeseformice/transformice.js.git"
 	},
 	"keywords": [
 		"transformice"
@@ -20,9 +20,9 @@
 	"author": "SuspiciousLookingOwl",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/SuspiciousLookingOwl/transformice.js/issues"
+		"url": "https://github.com/Cheeseformice/transformice.js/issues"
 	},
-	"homepage": "https://github.com/SuspiciousLookingOwl/transformice.js#readme",
+	"homepage": "https://github.com/Cheeseformice/transformice.js#readme",
 	"devDependencies": {
 		"@types/iconv-lite": "0.0.1",
 		"@types/jest": "^26.0.19",
