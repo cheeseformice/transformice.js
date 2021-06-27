@@ -1,6 +1,4 @@
-const Identifier = (c: number, cc: number) => {
-	return (c << 8) | cc;
-};
+import { Identifier } from "./identifier";
 
 /**
  * The identifiers of the packets.
