@@ -182,10 +182,7 @@ export default class ByteArray {
 	 */
 	writeBytes(bytes: ByteArray, offset = 0, length = 0) {
 		if (length === 0) length = bytes.length - offset;
-		this.expand(length);
-		for (let i = 0; i < length; i++)
-			this.buffer[i + this.writePosition] = bytes.buffer[i + offset];
-		this.writePosition += length;
+		this.write(bytes.buffer.subarray(offset, offset + length));
 		return this;
 	}
 
