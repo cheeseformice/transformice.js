@@ -1,6 +1,6 @@
 ---
 id: "globals"
-title: "transformice.js"
+title: "@cheeseformice/transformice.js"
 sidebar_label: "Globals"
 ---
 
@@ -9,6 +9,7 @@ sidebar_label: "Globals"
 ### Classes
 
 * [Base](classes/base.md)
+* [ByteArray](classes/bytearray.md)
 * [Channel](classes/channel.md)
 * [ChannelMessage](classes/channelmessage.md)
 * [Client](classes/client.md)
@@ -48,6 +49,7 @@ sidebar_label: "Globals"
 ### Functions
 
 * [Identifier](globals.md#identifier)
+* [IdentifierSplit](globals.md#identifiersplit)
 
 ### Object literals
 
@@ -329,6 +331,8 @@ Name | Type |
 
 ▸ `Const`**Identifier**(`c`: number, `cc`: number): number
 
+Joins 2 separate bytes of a packet code (c, cc) into a 16-bit short integer.
+
 #### Parameters:
 
 Name | Type |
@@ -337,6 +341,22 @@ Name | Type |
 `cc` | number |
 
 **Returns:** number
+
+___
+
+### IdentifierSplit
+
+▸ `Const`**IdentifierSplit**(`identifier`: number): [number, number]
+
+Splits a 16-bit short integer into 2 separate bytes of a packet code (c, cc).
+
+#### Parameters:
+
+Name | Type |
+------ | ------ |
+`identifier` | number |
+
+**Returns:** [number, number]
 
 ## Object literals
 

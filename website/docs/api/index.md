@@ -1,6 +1,6 @@
 ---
 id: "index"
-title: "transformice.js"
+title: "@cheeseformice/transformice.js"
 slug: "/api"
 sidebar_label: "README"
 hide_title: true
@@ -37,7 +37,7 @@ npm run dev
 ## Example
 
 ```js
-const { Client, enums } = require("transformice.js");
+const { Client, enums } = require("@cheeseformice/transformice.js");
 
 const client = new Client("username", "password", {
 	language: enums.languages.en

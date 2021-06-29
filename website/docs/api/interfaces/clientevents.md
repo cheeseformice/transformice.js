@@ -172,7 +172,7 @@ ___
 
 ### rawPacket
 
-•  **rawPacket**: (conn: Connection, ccc: number, packet: ByteArray) => void
+•  **rawPacket**: (conn: Connection, ccc: number, packet: [ByteArray](../classes/bytearray.md)) => void
 
 Emitted when a new packet received from main or bulle connection.
 
@@ -180,7 +180,7 @@ ___
 
 ### rawTribulle
 
-•  **rawTribulle**: (code: number, packet: ByteArray) => void
+•  **rawTribulle**: (code: number, packet: [ByteArray](../classes/bytearray.md)) => void
 
 Emitted when a new community platform packet received.
 
