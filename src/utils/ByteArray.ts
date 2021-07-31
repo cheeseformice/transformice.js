@@ -1,4 +1,4 @@
-import { decode } from "iconv-lite";
+import jsesc from "jsesc";
 
 export default class ByteArray {
 	buffer: Buffer;
@@ -152,10 +152,13 @@ export default class ByteArray {
 	}
 
 	/**
-	 * Converts the byte array to a string.
+	 * Converts the byte array to a string representation.
 	 */
-	toString() {
-		return decode(this.buffer, "utf-8");
+	toString(encoding: BufferEncoding | "printable" = "printable") {
+		if (encoding == "printable") {
+			return jsesc(this.buffer.toString());
+		}
+		return this.buffer.toString(encoding);
 	}
 
 	/**
