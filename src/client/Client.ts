@@ -248,13 +248,6 @@ class Client extends EventEmitter {
 	private sendHandshake() {
 		const p = new ByteArray();
 		p.writeShort(666);
-		p.writeUTF("Desktop").writeUTF("-").writeInt(0x1fbd);
-		p.writeUTF("");
-		p.writeUTF("74696720697320676f6e6e61206b696c6c206d7920626f742e20736f20736164");
-		p.writeUTF(
-			"A=t&SA=t&SV=t&EV=t&MP3=t&AE=t&VE=t&ACC=t&PR=t&SP=f&SB=f&DEB=f&V=LNX 32,0,0,182&M=Adobe Linux&R=1920x1080&COL=color&AR=1.0&OS=Linux&ARCH=x86&L=en&IME=t&PR32=t&PR64=t&LS=en-US&PT=Desktop&AVD=f&LFD=f&WD=f&TLS=t&ML=5.1&DP=72"
-		);
-		p.writeInt(0).writeInt(0x6257).writeUTF("");
 		this.main.send(identifiers.handshake, p);
 	}
 
@@ -295,8 +288,8 @@ class Client extends EventEmitter {
 	private login(name: string, password: string, room: string) {
 		const p = new ByteArray().writeUTF(name).writeUTF(SHAKikoo(password));
 		p.writeUTF("app:/TransformiceAIR.swf/[[DYNAMIC]]/2/[[DYNAMIC]]/4").writeUTF(room);
-		p.writeByte(0).writeUTF("");
-		this.main.send(identifiers.loginSend, p.writeByte(0));
+		p.writeInt(0).writeShort(18).writeByte(0).writeUTF("");
+		this.main.send(identifiers.loginSend, p);
 	}
 
 	/**
