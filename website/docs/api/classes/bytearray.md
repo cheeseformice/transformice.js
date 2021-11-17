@@ -237,9 +237,15 @@ ___
 
 ### toString
 
-▸ **toString**(): string
+▸ **toString**(`encoding?`: BufferEncoding \| &#34;printable&#34;): string
 
-Converts the byte array to a string.
+Converts the byte array to a string representation.
+
+#### Parameters:
+
+Name | Type | Default value |
+------ | ------ | ------ |
+`encoding` | BufferEncoding \| &#34;printable&#34; | "printable" |
 
 **Returns:** string
 

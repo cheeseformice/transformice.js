@@ -32,7 +32,7 @@ ___
 
 ### gender
 
-•  **gender**: [ValueOf](../globals.md#valueof)<*typeof* genders\>
+•  **gender**: [Gender](../enums/gender.md)
 
 The member's gender
 

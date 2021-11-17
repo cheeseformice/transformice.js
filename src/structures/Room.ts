@@ -1,7 +1,7 @@
 import { ValueOf } from "../utils";
 import { RoomPlayer, Base } from ".";
 import Client from "../client";
-import { languages } from "../enums";
+import { Language } from "../enums";
 
 /** Represents a room. */
 export default class Room extends Base {
@@ -20,7 +20,7 @@ export default class Room extends Base {
 	/**
 	 * The room language.
 	 */
-	language: ValueOf<typeof languages>;
+	language: ValueOf<typeof Language>;
 	/**
 	 * Whether or not the room is a tribe house.
 	 */
@@ -33,7 +33,7 @@ export default class Room extends Base {
 		client: Client,
 		isPublic: boolean,
 		name: string,
-		language: ValueOf<typeof languages>
+		language: ValueOf<typeof Language>
 	) {
 		super(client);
 		this.client = client;

@@ -40,7 +40,7 @@ ___
 
 ### language
 
-•  **language**: [ValueOf](../globals.md#valueof)<*typeof* languages\>
+•  **language**: [ValueOf](../globals.md#valueof)<*typeof* Language\>
 
 The room language.
 

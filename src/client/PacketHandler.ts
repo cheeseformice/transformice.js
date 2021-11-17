@@ -1,4 +1,4 @@
-import { identifiers, languages } from "../enums";
+import { identifiers, Language } from "../enums";
 import Client from "./Client";
 import { Room, RoomMessage, RoomPlayer, Profile } from "../structures";
 import { ByteArray, Connection, ValueOf } from "../utils";
@@ -27,7 +27,7 @@ class PacketHandler {
 
 	static [identifiers.handshakeOk](this: Client, _conn: Connection, packet: ByteArray) {
 		this.onlinePlayers = packet.readUnsignedInt();
-		packet.readUTF() as ValueOf<typeof languages>; // default language
+		packet.readUTF() as ValueOf<typeof Language>; // default language
 		packet.readUTF(); // country;
 		packet.readUnsignedInt(); // server auth key
 
@@ -125,7 +125,7 @@ class PacketHandler {
 		const before = this.room;
 		const isPublic = packet.readBoolean();
 		const name = packet.readUTF();
-		const language = packet.readUTF() as ValueOf<typeof languages>;
+		const language = packet.readUTF() as ValueOf<typeof Language>;
 		this.room = new Room(this, isPublic, name, language);
 		this.emit("roomChange", this.room, before);
 	}

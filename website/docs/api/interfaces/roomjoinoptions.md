@@ -20,7 +20,7 @@ ___
 
 ### language
 
-• `Optional` **language**: [ValueOf](../globals.md#valueof)<*typeof* languages\>
+• `Optional` **language**: [ValueOf](../globals.md#valueof)<*typeof* Language\>
 
 The community of the room to join.
 

@@ -1,5 +1,5 @@
 import { ValueOf, ByteArray } from "../utils";
-import { genders } from "../enums";
+import { Gender } from "../enums";
 import Client from "../client";
 import Player from "./Player";
 
@@ -12,7 +12,7 @@ export default class Friend extends Player {
 	/**
 	 * The player's gender
 	 */
-	gender: ValueOf<typeof genders>;
+	gender: Gender;
 	/**
 	 * If the player is the soulmate of the client
 	 */
@@ -61,7 +61,7 @@ export default class Friend extends Player {
 	read(packet: ByteArray, isSoulmate: boolean) {
 		this.id = packet.readInt();
 		this.name = packet.readUTF();
-		this.gender = packet.readByte() as ValueOf<typeof genders>;
+		this.gender = packet.readByte();
 		packet.readInt(); // ?
 		this.isSoulmate = isSoulmate;
 		this.hasAddedBack = packet.readBoolean();

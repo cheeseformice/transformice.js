@@ -116,7 +116,7 @@ ___
 
 ### languageChange
 
-•  **languageChange**: (language: [ValueOf](../globals.md#valueof)<*typeof* languages\>, country: string, readRight: boolean, readSpecialChar: boolean) => void
+•  **languageChange**: (language: [ValueOf](../globals.md#valueof)<*typeof* Language\>, country: string, readRight: boolean, readSpecialChar: boolean) => void
 
 Emitted when a language is changed.characters or not.
 

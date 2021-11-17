@@ -12,7 +12,7 @@ hide_title: true
 
 NodeJs Client for Transformice with full Typescript support.
 
-[Read the docs](https://transformice-js.netlify.app/docs/) 
+[Read the docs](https://transformice-js.netlify.app/docs/)
 
 ## Development
 
@@ -40,7 +40,7 @@ npm run dev
 const { Client, enums } = require("@cheeseformice/transformice.js");
 
 const client = new Client("username", "password", {
-	language: enums.languages.en
+	language: enums.Language.en
 });
 
 client.on("roomMessage", (message) => {

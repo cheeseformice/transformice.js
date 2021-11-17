@@ -3,7 +3,7 @@ import { EventEmitter } from "events";
 
 import { ByteArray, Connection, SHAKikoo, ValueOf } from "../utils";
 import { Room, RoomPlayer } from "../structures";
-import { tribulle, identifiers, languages } from "../enums";
+import { tribulle, identifiers, Language } from "../enums";
 import PacketHandler from "./PacketHandler";
 import ClientEvents from "./Events";
 import TribullePacketHandler from "./TribullePacketHandler";
@@ -17,7 +17,7 @@ interface ClientOptions {
 	/**
 	 * Which community to log in to ([language enum](/docs/api/globals#languages))
 	 */
-	language?: ValueOf<typeof languages>;
+	language?: ValueOf<typeof Language>;
 	/**
 	 * The room where the client will be logged in (Default: `1`)
 	 */
@@ -32,7 +32,7 @@ interface RoomJoinOptions {
 	/**
 	 * The community of the room to join.
 	 */
-	language?: ValueOf<typeof languages>;
+	language?: ValueOf<typeof Language>;
 	/**
 	 * The password of the room to join.
 	 * If given, `language` and `auto` parameters are ignored.
@@ -126,7 +126,7 @@ class Client extends EventEmitter {
 	/**
 	 * The language suggested by the server.
 	 */
-	language!: ValueOf<typeof languages>;
+	language!: ValueOf<typeof Language>;
 	/**
 	 * The room where the client will be logged in.
 	 */
@@ -140,7 +140,7 @@ class Client extends EventEmitter {
 		super();
 
 		this.autoReconnect = options?.autoReconnect ?? true;
-		this.language = options?.language || languages.en;
+		this.language = options?.language || Language.en;
 		this.loginRoom = options?.loginRoom || "1";
 		this.whoList = {};
 		this.channels = [];
@@ -251,8 +251,8 @@ class Client extends EventEmitter {
 		this.main.send(identifiers.handshake, p);
 	}
 
-	protected setLanguage(code: ValueOf<typeof languages> = languages.en) {
-		if (typeof code !== "string") code = languages.en;
+	protected setLanguage(code: ValueOf<typeof Language> = Language.en) {
+		if (typeof code !== "string") code = Language.en;
 		const p = new ByteArray().writeUTF(code);
 		this.main.send(identifiers.language, p);
 	}

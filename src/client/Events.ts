@@ -12,7 +12,7 @@ import {
 	Tribe,
 	WhisperMessage,
 } from "../structures";
-import { languages } from "../enums";
+import { Language } from "../enums";
 
 interface ClientEvents {
 	/* -------------------------------------------------------------------------- */
@@ -55,7 +55,7 @@ interface ClientEvents {
 	 * Emitted when a language is changed.characters or not.
 	 */
 	languageChange: (
-		language: ValueOf<typeof languages>,
+		language: ValueOf<typeof Language>,
 		country: string,
 		readRight: boolean,
 		readSpecialChar: boolean

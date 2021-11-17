@@ -1,5 +1,5 @@
 import { ValueOf, ByteArray } from "../utils";
-import { genders } from "../enums";
+import { Gender } from "../enums";
 import Client from "../client";
 import { Tribe, Player } from ".";
 
@@ -16,7 +16,7 @@ export default class Member extends Player {
 	/**
 	 * The member's gender
 	 */
-	gender!: ValueOf<typeof genders>;
+	gender!: Gender;
 	/**
 	 * The player's last connection time
 	 */
@@ -50,7 +50,7 @@ export default class Member extends Player {
 	read(packet: ByteArray) {
 		this.id = packet.readInt();
 		this.name = packet.readUTF();
-		this.gender = packet.readByte() as ValueOf<typeof genders>;
+		this.gender = packet.readByte();
 		packet.readInt(); // ?
 		this.lastConnection = packet.readInt();
 		this.rankId = packet.readByte();

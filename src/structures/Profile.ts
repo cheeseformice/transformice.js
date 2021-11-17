@@ -1,12 +1,12 @@
 import { ValueOf, ByteArray } from "../utils";
-import { genders } from "../enums";
+import { Gender } from "../enums";
 import Client from "../client";
 import { Player } from ".";
 
 /** Represents player's profile from `/profile` command */
 export default class Profile extends Player {
 	id!: number;
-	gender!: ValueOf<typeof genders>;
+	gender!: Gender;
 	registrationDate!: number;
 	role!: number;
 	tribeName!: string;
@@ -60,7 +60,7 @@ export default class Profile extends Player {
 		this.registrationDate = packet.readInt();
 		this.role = packet.readByte();
 
-		this.gender = packet.readByte() as ValueOf<typeof genders>;
+		this.gender = packet.readByte();
 		this.tribeName = packet.readUTF();
 		this.soulmate = packet.readUTF();
 

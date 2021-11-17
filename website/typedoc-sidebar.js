@@ -3,6 +3,22 @@ module.exports = [
   "api/globals",
   {
     "type": "category",
+    "label": "Enumerations",
+    "items": [
+      "api/enums/chatcommunity",
+      "api/enums/emote",
+      "api/enums/game",
+      "api/enums/gamecommunity",
+      "api/enums/gender",
+      "api/enums/language",
+      "api/enums/role",
+      "api/enums/roommode",
+      "api/enums/smile",
+      "api/enums/whisperstate"
+    ]
+  },
+  {
+    "type": "category",
     "label": "Classes",
     "items": [
       "api/classes/base",
