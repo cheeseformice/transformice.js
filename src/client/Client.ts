@@ -267,7 +267,18 @@ class Client extends EventEmitter {
 	 */
 	private async fetchIP() {
 		const response = await fetch("https://api.tocuto.tk/tfm/get/ip");
-		const result = await response.json();
+		const result = await response.json() as { success: false, error: string } | {
+			success: true,
+			internal_error: true,
+			internal_error_step: number
+		} | {
+			success: true,
+			internal_error?: false,
+			server: {
+				ip: string,
+				ports: number[]
+			}
+		};
 		if (result.success) {
 			if (!result.internal_error) {
 				this.ports = result.server.ports;
