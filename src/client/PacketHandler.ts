@@ -1,7 +1,7 @@
-import { identifiers, Language } from "../enums";
+import { BulleIdentifier, Language } from "../enums";
 import Client from "./Client";
 import { Room, RoomMessage, RoomPlayer, Profile } from "../structures";
-import { ByteArray, Connection, ValueOf } from "../utils";
+import { ByteArray, Connection } from "../utils";
 
 /**
  * @hidden
@@ -18,16 +18,16 @@ class PacketHandler {
 	/*                                   General                                  */
 	/* -------------------------------------------------------------------------- */
 
-	static [identifiers.oldPacket](this: Client, conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.oldPacket](this: Client, conn: Connection, packet: ByteArray) {
 		const data = packet.readUTF().split(String.fromCharCode(1));
 		const a = data.splice(0, 1)[0];
 		const ccc = (a.charCodeAt(0) << 8) | a.charCodeAt(1);
 		this.handleOldPacket(conn, ccc, data);
 	}
 
-	static [identifiers.handshakeOk](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.handshakeOk](this: Client, _conn: Connection, packet: ByteArray) {
 		this.onlinePlayers = packet.readUnsignedInt();
-		packet.readUTF() as ValueOf<typeof Language>; // default language
+		packet.readUTF() as Language; // default language
 		packet.readUTF(); // country;
 		packet.readUnsignedInt(); // server auth key
 
@@ -35,20 +35,20 @@ class PacketHandler {
 		this.startHeartbeat();
 	}
 
-	static [identifiers.loginReady](this: Client) {
+	static [BulleIdentifier.loginReady](this: Client) {
 		this.emit("loginReady");
 	}
 
-	static [identifiers.fingerprint](this: Client, conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.fingerprint](this: Client, conn: Connection, packet: ByteArray) {
 		conn.fingerprint = packet.readByte();
 	}
 
-	static [identifiers.bulle](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.bulle](this: Client, _conn: Connection, packet: ByteArray) {
 		const code = packet.readUnsignedShort();
 		this.handleTribulle(code, packet);
 	}
 
-	static [identifiers.bulleConnection](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.bulleConnection](this: Client, _conn: Connection, packet: ByteArray) {
 		const timestamp = packet.readUnsignedInt();
 		const playerId = packet.readUnsignedInt();
 		const pcode = packet.readUnsignedInt();
@@ -73,7 +73,7 @@ class PacketHandler {
 		});
 		this.bulle.on("connect", () => {
 			this.bulle.send(
-				identifiers.bulleConnection,
+				BulleIdentifier.bulleConnection,
 				new ByteArray()
 					.writeUnsignedInt(timestamp)
 					.writeUnsignedInt(playerId)
@@ -83,7 +83,7 @@ class PacketHandler {
 		this.bulle.connect(host, this.ports[0]);
 	}
 
-	static [identifiers.profile](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.profile](this: Client, _conn: Connection, packet: ByteArray) {
 		this.emit("profile", new Profile(this).read(packet));
 	}
 
@@ -91,7 +91,7 @@ class PacketHandler {
 	/*                                Login Result                                */
 	/* -------------------------------------------------------------------------- */
 
-	static [identifiers.loggedIn](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.loggedIn](this: Client, _conn: Connection, packet: ByteArray) {
 		this.playerId = packet.readUnsignedInt();
 		this.name = packet.readUTF();
 		this.playingTime = packet.readUnsignedInt();
@@ -101,7 +101,7 @@ class PacketHandler {
 		this.emit("login", this.name, this.pcode);
 	}
 
-	static [identifiers.loginError](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.loginError](this: Client, _conn: Connection, packet: ByteArray) {
 		this.emit("loginError", packet.readUnsignedByte(), packet.readUTF(), packet.readUTF());
 	}
 
@@ -109,11 +109,11 @@ class PacketHandler {
 	/*                                    Room                                    */
 	/* -------------------------------------------------------------------------- */
 
-	static [identifiers.luaChatLog](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.luaChatLog](this: Client, _conn: Connection, packet: ByteArray) {
 		this.emit("luaLog", packet.readUTF());
 	}
 
-	static [identifiers.roomMessage](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.roomMessage](this: Client, _conn: Connection, packet: ByteArray) {
 		const player = this.room.getPlayer(packet.readUTF());
 		if (!player) return;
 		const content = packet.readUTF();
@@ -121,16 +121,16 @@ class PacketHandler {
 		this.emit("roomMessage", message);
 	}
 
-	static [identifiers.roomChange](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.roomChange](this: Client, _conn: Connection, packet: ByteArray) {
 		const before = this.room;
 		const isPublic = packet.readBoolean();
 		const name = packet.readUTF();
-		const language = packet.readUTF() as ValueOf<typeof Language>;
+		const language = packet.readUTF() as Language;
 		this.room = new Room(this, isPublic, name, language);
 		this.emit("roomChange", this.room, before);
 	}
 
-	static [identifiers.roomPlayerList](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.roomPlayerList](this: Client, _conn: Connection, packet: ByteArray) {
 		const before = this.room.playerList;
 		this.room.playerList = [];
 		const length = packet.readUnsignedShort();
@@ -142,7 +142,7 @@ class PacketHandler {
 		this.emit("roomPlayersUpdate", this.room.playerList, before);
 	}
 
-	static [identifiers.roomPlayerEnter](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.roomPlayerEnter](this: Client, _conn: Connection, packet: ByteArray) {
 		const player = new RoomPlayer(this).read(packet);
 		if (this.room.getPlayer(player.pcode)) {
 			this.room.updatePlayer(player);
@@ -153,7 +153,7 @@ class PacketHandler {
 		}
 	}
 
-	static [identifiers.roomPlayerWin](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.roomPlayerWin](this: Client, _conn: Connection, packet: ByteArray) {
 		packet.readByte();
 		const player = this.room.getPlayer(packet.readInt());
 		if (player) {
@@ -164,7 +164,7 @@ class PacketHandler {
 		}
 	}
 
-	static [identifiers.roomPlayerGetCheese](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.roomPlayerGetCheese](this: Client, _conn: Connection, packet: ByteArray) {
 		const player = this.room.getPlayer(packet.readInt());
 		if (player) {
 			player.hasCheese = packet.readBoolean();

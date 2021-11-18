@@ -1,4 +1,4 @@
-import { Connection, ByteArray, ValueOf } from "../utils";
+import { Connection, ByteArray } from "../utils";
 import {
 	ChannelMessage,
 	Friend,
@@ -55,7 +55,7 @@ interface ClientEvents {
 	 * Emitted when a language is changed.characters or not.
 	 */
 	languageChange: (
-		language: ValueOf<typeof Language>,
+		language: Language,
 		country: string,
 		readRight: boolean,
 		readSpecialChar: boolean

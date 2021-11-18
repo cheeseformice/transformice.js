@@ -1,6 +1,6 @@
 import Client from "./Client";
 import { Connection } from "../utils";
-import { oldIdentifiers } from "../enums";
+import { OldIdentifier } from "../enums";
 
 /**
  * @hidden
@@ -13,7 +13,7 @@ interface OldPacketHandlerIndex {
  * @hidden
  */
 class OldPacketHandler {
-	static [oldIdentifiers.roomPlayerLeft](
+	static [OldIdentifier.roomPlayerLeft](
 		this: Client,
 		_conn: Connection,
 		_ccc: number,
@@ -26,7 +26,7 @@ class OldPacketHandler {
 		}
 	}
 
-	static [oldIdentifiers.roomPlayerDie](
+	static [OldIdentifier.roomPlayerDie](
 		this: Client,
 		_conn: Connection,
 		_ccc: number,

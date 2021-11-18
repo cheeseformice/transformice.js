@@ -1,8 +1,8 @@
 import net from "net";
 import { EventEmitter } from "events";
 
-import { ByteArray, ValueOf } from ".";
-import { identifiers } from "../enums";
+import { ByteArray } from ".";
+import { BulleIdentifier } from "../enums";
 
 /**
  * Represents a client that connects to Transformice.
@@ -75,7 +75,7 @@ export default class Connection extends EventEmitter {
 	 * @param {ByteArray} packet - The packet.
 	 */
 	send(
-		identifier: ValueOf<typeof identifiers>,
+		identifier: BulleIdentifier,
 		packet: ByteArray
 	) {
 		packet = new ByteArray().writeUnsignedShort(identifier).writeBytes(packet);

@@ -1,4 +1,4 @@
-import { ValueOf, ByteArray } from "../utils";
+import { ByteArray } from "../utils";
 import { Gender } from "../enums";
 import Client from "../client";
 import { Tribe, Player } from ".";

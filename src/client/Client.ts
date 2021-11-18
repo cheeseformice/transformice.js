@@ -1,9 +1,9 @@
 import fetch from "node-fetch";
 import { EventEmitter } from "events";
 
-import { ByteArray, Connection, SHAKikoo, ValueOf } from "../utils";
+import { ByteArray, Connection, SHAKikoo } from "../utils";
 import { Room, RoomPlayer } from "../structures";
-import { tribulle, identifiers, Language } from "../enums";
+import { TribulleIdentifier, BulleIdentifier, Language, GameCommunity } from "../enums";
 import PacketHandler from "./PacketHandler";
 import ClientEvents from "./Events";
 import TribullePacketHandler from "./TribullePacketHandler";
@@ -17,7 +17,7 @@ interface ClientOptions {
 	/**
 	 * Which community to log in to ([language enum](/docs/api/globals#languages))
 	 */
-	language?: ValueOf<typeof Language>;
+	language?: Language;
 	/**
 	 * The room where the client will be logged in (Default: `1`)
 	 */
@@ -32,7 +32,7 @@ interface RoomJoinOptions {
 	/**
 	 * The community of the room to join.
 	 */
-	language?: ValueOf<typeof Language>;
+	language?: Language;
 	/**
 	 * The password of the room to join.
 	 * If given, `language` and `auto` parameters are ignored.
@@ -122,11 +122,11 @@ class Client extends EventEmitter {
 	/**
 	 * The client's community code.
 	 */
-	community!: number;
+	community!: GameCommunity;
 	/**
 	 * The language suggested by the server.
 	 */
-	language!: ValueOf<typeof Language>;
+	language!: Language;
 	/**
 	 * The room where the client will be logged in.
 	 */
@@ -216,7 +216,7 @@ class Client extends EventEmitter {
 	/**
 	 * Handles the community platform packets and emits events.
 	 */
-	protected handleTribulle(code: number, packet: ByteArray) {
+	protected handleTribulle(code: TribulleIdentifier, packet: ByteArray) {
 		if (code in TribullePacketHandler) TribullePacketHandler[code].call(this, packet);
 		this.emit("rawTribulle", code, packet);
 	}
@@ -224,11 +224,11 @@ class Client extends EventEmitter {
 	/**
 	 * Sends a packet to the community platform (tribulle).
 	 */
-	private sendTribullePacket(code: number, packet: ByteArray) {
+	private sendTribullePacket(code: TribulleIdentifier, packet: ByteArray) {
 		this.tribulleId = (this.tribulleId % 0x100000000) + 1;
 		const p = new ByteArray().writeShort(code).writeUnsignedInt(this.tribulleId);
 		p.writeBytes(packet);
-		this.main.send(identifiers.bulle, p);
+		this.main.send(BulleIdentifier.bulle, p);
 
 		return this.tribulleId;
 	}
@@ -237,29 +237,29 @@ class Client extends EventEmitter {
 	 * Sends a packet every 15 seconds to stay connected to the game.
 	 */
 	protected startHeartbeat() {
-		this.main.send(identifiers.heartbeat, new ByteArray());
+		this.main.send(BulleIdentifier.heartbeat, new ByteArray());
 		this.loops.heartbeat = setInterval(() => {
-			this.main.send(identifiers.heartbeat, new ByteArray());
+			this.main.send(BulleIdentifier.heartbeat, new ByteArray());
 			if (this.bulle && this.bulle.open)
-				this.bulle.send(identifiers.heartbeat, new ByteArray());
+				this.bulle.send(BulleIdentifier.heartbeat, new ByteArray());
 		}, 1000 * 15);
 	}
 
 	private sendHandshake() {
 		const p = new ByteArray();
 		p.writeShort(666);
-		this.main.send(identifiers.handshake, p);
+		this.main.send(BulleIdentifier.handshake, p);
 	}
 
-	protected setLanguage(code: ValueOf<typeof Language> = Language.en) {
+	protected setLanguage(code: Language = Language.en) {
 		if (typeof code !== "string") code = Language.en;
 		const p = new ByteArray().writeUTF(code);
-		this.main.send(identifiers.language, p);
+		this.main.send(BulleIdentifier.language, p);
 	}
 
 	protected setSystemInfo(langue: string, sys: string, version: string) {
 		const p = new ByteArray().writeUTF(langue).writeUTF(sys).writeUTF(version);
-		this.main.send(identifiers.os, p.writeByte(0));
+		this.main.send(BulleIdentifier.os, p.writeByte(0));
 	}
 
 	/**
@@ -289,7 +289,7 @@ class Client extends EventEmitter {
 		const p = new ByteArray().writeUTF(name).writeUTF(SHAKikoo(password));
 		p.writeUTF("app:/TransformiceAIR.swf/[[DYNAMIC]]/2/[[DYNAMIC]]/4").writeUTF(room);
 		p.writeInt(0).writeShort(18).writeByte(0).writeUTF("");
-		this.main.send(identifiers.loginSend, p);
+		this.main.send(BulleIdentifier.loginSend, p);
 	}
 
 	/**
@@ -369,14 +369,14 @@ class Client extends EventEmitter {
 	 * Sends a message to tribe
 	 */
 	sendTribeMessage(message: string) {
-		this.sendTribullePacket(tribulle.tribeSendMessage, new ByteArray().writeUTF(message));
+		this.sendTribullePacket(TribulleIdentifier.tribeSendMessage, new ByteArray().writeUTF(message));
 	}
 
 	/**
 	 * Joins the tribe house.
 	 */
 	enterTribeHouse() {
-		this.main.send(identifiers.enterTribeHouse, new ByteArray());
+		this.main.send(BulleIdentifier.enterTribeHouse, new ByteArray());
 	}
 
 	/**
@@ -385,7 +385,7 @@ class Client extends EventEmitter {
 	loadLua(script: string) {
 		const length = Buffer.byteLength(script);
 		const p = new ByteArray().writeUnsignedShort(length >> 8).writeUnsignedByte(length & 255);
-		this.bulle.send(identifiers.loadLua, p);
+		this.bulle.send(BulleIdentifier.loadLua, p);
 	}
 
 	/**
@@ -393,7 +393,7 @@ class Client extends EventEmitter {
 	 */
 	joinChannel(channelName: string, permanent = true) {
 		this.sendTribullePacket(
-			tribulle.channelJoinRequest,
+			TribulleIdentifier.channelJoinRequest,
 			new ByteArray().writeUTF(channelName).writeBoolean(permanent)
 		);
 	}
@@ -403,7 +403,7 @@ class Client extends EventEmitter {
 	 */
 	leaveChannel(channelName: string) {
 		this.sendTribullePacket(
-			tribulle.channelLeaveRequest,
+			TribulleIdentifier.channelLeaveRequest,
 			new ByteArray().writeUTF(channelName)
 		);
 	}
@@ -413,7 +413,7 @@ class Client extends EventEmitter {
 	 */
 	requestWho(channelName: string) {
 		const fingerprint = this.sendTribullePacket(
-			tribulle.channelWhoRequest,
+			TribulleIdentifier.channelWhoRequest,
 			new ByteArray().writeUTF(channelName)
 		);
 		this.whoList[fingerprint] = channelName;
@@ -433,7 +433,7 @@ class Client extends EventEmitter {
 	 */
 	sendChannelMessage(channelName: string, message: string) {
 		this.sendTribullePacket(
-			tribulle.channelSendMessage,
+			TribulleIdentifier.channelSendMessage,
 			new ByteArray().writeUTF(channelName).writeUTF(message)
 		);
 	}
@@ -442,7 +442,7 @@ class Client extends EventEmitter {
 	 * Sends a message to the client's room.
 	 */
 	sendRoomMessage(message: string) {
-		this.bulle.send(identifiers.roomMessage, new ByteArray().writeUTF(message));
+		this.bulle.send(BulleIdentifier.roomMessage, new ByteArray().writeUTF(message));
 	}
 
 	/**
@@ -455,7 +455,7 @@ class Client extends EventEmitter {
 	 * ```
 	 */
 	sendCommand(message: string) {
-		this.main.send(identifiers.command, new ByteArray().writeUTF(message));
+		this.main.send(BulleIdentifier.command, new ByteArray().writeUTF(message));
 	}
 
 	/**
@@ -464,14 +464,14 @@ class Client extends EventEmitter {
 	enterRoom(name: string, options: RoomJoinOptions) {
 		if (options.password) {
 			this.main.send(
-				identifiers.roomPassworded,
+				BulleIdentifier.roomPassworded,
 				new ByteArray()
 					.writeUTF(options.password)
 					.writeUTF(name)
 			);
 		} else {
 			this.main.send(
-				identifiers.room,
+				BulleIdentifier.room,
 				new ByteArray()
 					.writeUTF(options.language ?? this.language)
 					.writeUTF(name)
@@ -485,7 +485,7 @@ class Client extends EventEmitter {
 	 */
 	sendWhisper(name: string, message: string) {
 		this.sendTribullePacket(
-			tribulle.whisperSend,
+			TribulleIdentifier.whisperSend,
 			new ByteArray().writeUTF(name.toLowerCase()).writeUTF(message)
 		);
 	}
@@ -494,7 +494,7 @@ class Client extends EventEmitter {
 	 * Request friend list.
 	 */
 	requestFriendList() {
-		this.sendTribullePacket(28, new ByteArray());
+		this.sendTribullePacket(TribulleIdentifier.requestFriendList, new ByteArray());
 	}
 
 	/**
@@ -509,14 +509,14 @@ class Client extends EventEmitter {
 	 * Add a player to friend list
 	 */
 	addFriend(name: string) {
-		this.sendTribullePacket(tribulle.friendAddRequest, new ByteArray().writeUTF(name));
+		this.sendTribullePacket(TribulleIdentifier.friendAddRequest, new ByteArray().writeUTF(name));
 	}
 
 	/**
 	 * Add a player to friend list
 	 */
 	removeFriend(name: string) {
-		this.sendTribullePacket(tribulle.friendRemoveRequest, new ByteArray().writeUTF(name));
+		this.sendTribullePacket(TribulleIdentifier.friendRemoveRequest, new ByteArray().writeUTF(name));
 	}
 
 	/**
@@ -524,7 +524,7 @@ class Client extends EventEmitter {
 	 */
 	requestTribe(includeDisconnectedMember = true) {
 		this.sendTribullePacket(
-			tribulle.tribeRequest,
+			TribulleIdentifier.tribeRequest,
 			new ByteArray().writeBoolean(includeDisconnectedMember)
 		);
 	}
