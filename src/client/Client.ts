@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+import got from "got";
 import { EventEmitter } from "events";
 
 import { ByteArray, Connection, SHAKikoo } from "../utils";
@@ -266,8 +266,8 @@ class Client extends EventEmitter {
 	 * Get Transformice IP
 	 */
 	private async fetchIP() {
-		const response = await fetch("https://api.tocuto.tk/tfm/get/ip");
-		const result = await response.json() as { success: false, error: string } | {
+		const result = await got("https://api.tocuto.tk/tfm/get/ip").json() as
+		{ success: false, error: string } | {
 			success: true,
 			internal_error: true,
 			internal_error_step: number

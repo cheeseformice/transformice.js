@@ -40,7 +40,7 @@
 		"wait-for-expect": "^3.0.2"
 	},
 	"dependencies": {
-		"jsesc": "^3.0.2",
-		"node-fetch": "^3.1.0"
+		"got": "^11.8.3",
+		"jsesc": "^3.0.2"
 	}
 }
