@@ -1,6 +1,8 @@
 # Transformice.js (WIP)
 
-## This is a maintained fork of [SuspiciousLookingOwl's version](https://github.com/SuspiciousLookingOwl/transformice.js)
+**This is a maintained fork of [SuspiciousLookingOwl's version](https://github.com/SuspiciousLookingOwl/transformice.js)**
+
+**The client is still in the Beta stage and may be prone to merciless API compatibility breakage.**
 
 NodeJs Client for Transformice with full Typescript support.
 

@@ -71,7 +71,8 @@ class PacketHandler {
 		this.bulle.on("data", (conn: Connection, packet: ByteArray) => {
 			this.handlePacket(conn, packet);
 		});
-		this.bulle.on("connect", () => {
+		this.bulle.once("connect", () => {
+			this.emit("bulleConnect", this.bulle);
 			this.bulle.send(
 				BulleIdentifier.bulleConnection,
 				new ByteArray()

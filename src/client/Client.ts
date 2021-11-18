@@ -79,8 +79,6 @@ class Client extends EventEmitter {
 	private host!: string;
 	protected identificationKeys!: number[];
 	protected messageKeys!: number[];
-	private main!: Connection;
-	protected bulle!: Connection;
 	private loops: Partial<{ heartbeat: NodeJS.Timeout }>;
 	private tribulleId: number;
 	private password: string;
@@ -135,6 +133,14 @@ class Client extends EventEmitter {
 	 * The client's temporary code.
 	 */
 	pcode!: number;
+	/**
+	 * The connection with the main server.
+	 */
+	main!: Connection;
+	/**
+	 * The connectionb with the game server (bulle).
+	 */
+	bulle!: Connection;
 
 	constructor(name: string, password: string, options?: ClientOptions) {
 		super();
@@ -313,7 +319,7 @@ class Client extends EventEmitter {
 			this.handlePacket(conn, packet);
 		});
 		this.main.once("connect", async () => {
-			this.emit("connect", this.main);
+			this.emit("mainConnect", this.main);
 			this.sendHandshake();
 			this.once("loginError", async (code) => {
 				if (code === 1 && this.autoReconnect) {

@@ -69,9 +69,13 @@ interface ClientEvents {
 	 */
 	disconnect: () => void;
 	/**
-	 * Emitted when a connection is successfully connected.
+	 * Emitted when a connection with the main server is established.
 	 */
 	connect: (connection: Connection) => void;
+	/**
+	 * Emitted when a connection with the game server (bulle) is established.
+	 */
+	bulleConnect: (connection: Connection) => void;
 	/**
 	 * Emitted when data received from /profile
 	 */
