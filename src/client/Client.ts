@@ -319,7 +319,7 @@ class Client extends EventEmitter {
 			this.handlePacket(conn, packet);
 		});
 		this.main.once("connect", async () => {
-			this.emit("mainConnect", this.main);
+			this.emit("connect", this.main);
 			this.sendHandshake();
 			this.once("loginError", async (code) => {
 				if (code === 1 && this.autoReconnect) {

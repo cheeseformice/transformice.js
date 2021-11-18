@@ -36,9 +36,13 @@ interface ClientEvents {
 	 */
 	loginError: (code: number, error1: string, error2: string) => void;
 	/**
-	 * Emitted when connection failed
+	 * Emitted when connection to the main server failed.
 	 */
 	connectionError: (err: Error) => void;
+	/**
+	 * Emitted when connection to the game server (bulle) failed.
+	 */
+	bulleConnectionError: (err: Error) => void;
 	/**
 	 * Emitted when client is attempting to restart the connection
 	 */
