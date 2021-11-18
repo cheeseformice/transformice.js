@@ -128,6 +128,7 @@ export enum GameCommunity {
 
 /** Chat communities used by the community platform for whispers and channels */
 export enum ChatCommunity {
+	int = 0,
 	en = 1,
 	fr = 2,
 	ru = 3,

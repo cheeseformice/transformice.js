@@ -1,3 +1,4 @@
+import { ChatCommunity } from "enums";
 import { Player, Message, Channel } from ".";
 import Client from "../client";
 
@@ -6,7 +7,7 @@ export default class ChannelMessage extends Message {
 	/**
 	 * Community of the author that sends the message
 	 */
-	community: number;
+	community: ChatCommunity;
 	/**
 	 * The Channel the message is sent to
 	 */
@@ -19,7 +20,7 @@ export default class ChannelMessage extends Message {
 		client: Client,
 		author: Player,
 		content: string,
-		community: number,
+		community: ChatCommunity,
 		channel: Channel
 	) {
 		super(client, author, content);
