@@ -1,4 +1,4 @@
-import { ChatCommunity } from "enums";
+import { ChatCommunity } from "../enums";
 import { Player, Message, Channel } from ".";
 import Client from "../client";
 
