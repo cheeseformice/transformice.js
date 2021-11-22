@@ -61,5 +61,5 @@ client.run();
 If you would like a different flavor to write your bot in, you may check out the other similar Transformice clients:
 
 * [aiotfm](https://github.com/Athesdrake/aiotfm) - Python
-* [Transfromage](https://github.com/Tocutoeltuco/transfromage) - Lua
+* [Transfromage](https://github.com/Lautenschlager-id/Transfromage) - Lua
 * [cheesy.js](https://github.com/Turkitutu/cheesy.js) - Another Node.js client
