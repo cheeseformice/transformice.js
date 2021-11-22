@@ -138,7 +138,7 @@ class Client extends EventEmitter {
 	 */
 	main!: Connection;
 	/**
-	 * The connectionb with the game server (bulle).
+	 * The connection with the game server (bulle).
 	 */
 	bulle!: Connection;
 
