@@ -154,11 +154,11 @@ export default class ByteArray {
 	/**
 	 * Converts the byte array to a string representation.
 	 */
-	toString(encoding: BufferEncoding | "printable" = "printable") {
-		if (encoding == "printable") {
+	toString(encodingOrFormat: BufferEncoding | "printable") {
+		if (encodingOrFormat == "printable") {
 			return jsesc(this.buffer.toString());
 		}
-		return this.buffer.toString(encoding);
+		return this.buffer.toString(encodingOrFormat);
 	}
 
 	/**
