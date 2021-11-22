@@ -1,5 +1,6 @@
 import { Message, Player } from ".";
 import Client from "../client";
+import { ChatCommunity } from "../enums";
 
 /** Represents a whisper message. */
 export default class WhisperMessage extends Message {
@@ -7,7 +8,7 @@ export default class WhisperMessage extends Message {
 	 * The player name who sent to them.
 	 */
 	sentTo: string;
-	community: number;
+	community: ChatCommunity;
 
 	/**
 	 * @hidden
@@ -15,7 +16,7 @@ export default class WhisperMessage extends Message {
 	constructor(
 		client: Client,
 		author: Player,
-		community: number,
+		community: ChatCommunity,
 		sentTo: string,
 		content: string
 	) {
