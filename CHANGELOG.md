@@ -11,12 +11,15 @@ Maintenance of the module has moved to [Cheeseformice](https://github.com/cheese
 - `Client` supports option `password` to set the default login room.
 - ByteArray can work natively with Node `Buffer`, with support for `readBufBytes` and `writeBufBytes`.
 - ByteArray supports `.toString("printable")` for debugging, as a convenience to calling `jsesc`.
+- Added `bulleConnect` event triggered on bulle connection. Note that the `bulleConnect` event was never part of `connect` and is newly added.
 
 ## Changes
 - `BREAKING` Dropped support for authentication keys login. You must use a approved bot account now.
 - `BREAKING` Targets minimally ES6 CommonJS now.
 - `BREAKING` Changed all the typing for `enums` to use TypeScript enums instead of plain JS objects. Renamed several enum type names.
+- `BREAKING` Separated `bulleConnectionError` from the regular `connectionError` event.
 - Exposed `Identifier` and `IdentifierSplit` for those who wish to manipulate raw packets.
+- Exposed `Client` main and bulle connections. This is useful for debugging server connections.
 
 ## Fixed
 - Login now works with Transformice protocol to date.

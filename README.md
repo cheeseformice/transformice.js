@@ -19,14 +19,6 @@ See below to know the names of Transfromage managers who handle the token system
 - **[Blank3495](https://github.com/Blank3495)** @discord=> `󠂪󠂪 󠂪󠂪 󠂪󠂪󠂪󠂪 󠂪󠂪 󠂪󠂪󠂪󠂪 󠂪󠂪 󠂪󠂪#8737` <sub>`436703225140346881`</sub>;
 - **[Bolodefchoco](https://github.com/Lautenschlager-id)** @discord=> `Lautenschlager#2555` <sub>`285878295759814656`</sub>.
 
-## Similar projects
-
-If you would like a different flavor to write your bot in, you may check out the other similar Transformice clients:
-
-* [aiotfm](https://github.com/Athesdrake/aiotfm) - Python
-* [Transfromage](https://github.com/Tocutoeltuco/transfromage) - Lua
-* [cheesy.js](https://github.com/Turkitutu/cheesy.js) - Another Node.js client
-
 ## Development
 
 Clone the repository:
@@ -63,3 +55,11 @@ client.on("roomMessage", (message) => {
 
 client.run();
 ```
+
+## Similar projects
+
+If you would like a different flavor to write your bot in, you may check out the other similar Transformice clients:
+
+* [aiotfm](https://github.com/Athesdrake/aiotfm) - Python
+* [Transfromage](https://github.com/Tocutoeltuco/transfromage) - Lua
+* [cheesy.js](https://github.com/Turkitutu/cheesy.js) - Another Node.js client
