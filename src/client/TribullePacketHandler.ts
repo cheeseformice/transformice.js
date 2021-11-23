@@ -2,6 +2,7 @@ import Client from "./Client";
 import {
 	Channel,
 	ChannelMessage,
+	ChatPlayer,
 	Friend,
 	Member,
 	Message,
@@ -42,9 +43,9 @@ class TribullePacketHandler {
 		const content = packet.readUTF();
 		const message = new WhisperMessage(
 			this,
-			new Player(this, author),
+			new ChatPlayer(this, author),
 			community,
-			sentTo,
+			new ChatPlayer(this, sentTo),
 			content
 		);
 		this.emit("whisper", message);

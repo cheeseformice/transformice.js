@@ -1,4 +1,4 @@
-import { Message, Player } from ".";
+import { ChatPlayer, Message } from ".";
 import Client from "../client";
 import { ChatCommunity } from "../enums";
 
@@ -7,7 +7,7 @@ export default class WhisperMessage extends Message {
 	/**
 	 * The player name who sent to them.
 	 */
-	sentTo: string;
+	sentTo: ChatPlayer;
 	community: ChatCommunity;
 
 	/**
@@ -15,9 +15,9 @@ export default class WhisperMessage extends Message {
 	 */
 	constructor(
 		client: Client,
-		author: Player,
+		author: ChatPlayer,
 		community: ChatCommunity,
-		sentTo: string,
+		sentTo: ChatPlayer,
 		content: string
 	) {
 		super(client, author, content);

@@ -1,10 +1,10 @@
 import { ByteArray } from "../utils";
-import { Gender } from "../enums";
+import { ChatCommunity, Gender } from "../enums";
 import Client from "../client";
-import Player from "./Player";
+import ChatPlayer from "./ChatPlayer";
 
 /** Represents a friend from the friend list */
-export default class Friend extends Player {
+export default class Friend extends ChatPlayer {
 	/**
 	 * The player's id
 	 */
@@ -28,7 +28,7 @@ export default class Friend extends Player {
 	/**
 	 * The community of the player
 	 */
-	community: number;
+	community: ChatCommunity;
 	/**
 	 * The room name of the player (if they are online)
 	 */
@@ -60,7 +60,7 @@ export default class Friend extends Player {
 	 */
 	read(packet: ByteArray, isSoulmate: boolean) {
 		this.id = packet.readInt();
-		this.name = packet.readUTF();
+		this.setCpName(packet.readUTF());
 		this.gender = packet.readByte();
 		packet.readInt(); // ?
 		this.isSoulmate = isSoulmate;

@@ -2,6 +2,7 @@ export { default as Base } from "./Base";
 export { default as Friend } from "./Friend";
 export { default as Player } from "./Player";
 export { default as RoomPlayer } from "./RoomPlayer";
+export { default as ChatPlayer } from "./ChatPlayer";
 export { default as Room } from "./Room";
 export { default as Channel } from "./Channel";
 export { default as Message } from "./Message";
