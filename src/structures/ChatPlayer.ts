@@ -1,4 +1,4 @@
-import { Player } from ".";
+import Player from "./Player";
 import Client from "../client";
 
 /** Represents a player reported by the community platform. */

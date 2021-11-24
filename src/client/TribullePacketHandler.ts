@@ -29,8 +29,18 @@ class TribullePacketHandler {
 	/* -------------------------------------------------------------------------- */
 
 	static [TribulleIdentifier.connect](this: Client) {
-		if (this.intents.friendList ?? true) this.openFriendList();
-		this.emit("ready");
+		if (this.intents.friendList ?? true) {
+			this.openFriendList();
+			// Try to prepare the friend list before the ready event
+			this.waitFor("friendList").then(() => {
+				this.emit("ready");
+			}).catch(() => {
+				this.emit("ready");
+			});
+		} else {
+			this.emit("ready");
+		}
+		this.emit("tribulleConnect");
 	}
 
 	/* -------------------------------------------------------------------------- */
@@ -57,7 +67,6 @@ class TribullePacketHandler {
 	/* -------------------------------------------------------------------------- */
 
 	static [TribulleIdentifier.friendList](this: Client, packet: ByteArray) {
-		if (!(this.intents.friendList ?? true)) return;
 		this.friends.clear();
 
 		const soulmate = new Friend(this).read(packet, true); // soulmate

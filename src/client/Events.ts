@@ -49,7 +49,7 @@ interface ClientEvents {
 	 */
 	restart: () => void;
 	/**
-	 * Emitted when the client is connected to the community platform.
+	 * Emitted when the client is fully ready to function.
 	 */
 	ready: () => void;
 	/**
@@ -81,6 +81,10 @@ interface ClientEvents {
 	 * Emitted when a connection with the game server (bulle) is established.
 	 */
 	bulleConnect: (connection: Connection) => void;
+	/**
+	 * Emitted when the community platform (tribulle) is connected.
+	 */
+	tribulleConnect: () => void;
 	/**
 	 * Emitted when data received from /profile
 	 */

@@ -179,17 +179,17 @@ class Client extends EventEmitter {
 	/**
 	 *  Wait for specific event to be emitted
 	 */
-	private waitFor<T extends keyof ClientEvents>(
+	protected waitFor<T extends keyof ClientEvents>(
 		eventName: T,
 		timeout?: number,
 		condition?: (...args: Parameters<ClientEvents[T]>) => boolean
 	): Promise<Parameters<ClientEvents[T]>>;
-	private waitFor<T extends keyof ClientEvents>(
+	protected waitFor<T extends keyof ClientEvents>(
 		eventName: T,
 		condition?: (...args: Parameters<ClientEvents[T]>) => boolean,
 		timeout?: number
 	): Promise<Parameters<ClientEvents[T]>>;
-	private waitFor<
+	protected waitFor<
 		T extends keyof ClientEvents,
 		Callback extends (...args: Parameters<ClientEvents[T]>) => boolean
 	>(
@@ -526,7 +526,6 @@ class Client extends EventEmitter {
 		);
 	}
 
-
 	/**
 	 * Open friend list.
 	 */
@@ -543,6 +542,19 @@ class Client extends EventEmitter {
 			throw `Cannot close friend list when intents.friendList is set.`;
 		}
 		this.sendTribullePacket(TribulleIdentifier.friendListCloseRequest);
+	}
+
+	/**
+	 * Get friend list.
+	 */
+	async getFriendList() {
+		if (this.intents.friendList ?? true) {
+			return this.friends;
+		}
+		this.openFriendList();
+		const friendList = (await this.waitFor("friendList"))[0];
+		this.closeFriendList();
+		return friendList;
 	}
 
 	/**
