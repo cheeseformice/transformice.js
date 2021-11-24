@@ -2,7 +2,7 @@ import got from "got";
 import { EventEmitter } from "events";
 
 import { ByteArray, Connection, SHAKikoo } from "../utils";
-import { Room, RoomPlayer } from "../structures";
+import { Friend, Room, RoomPlayer } from "../structures";
 import { TribulleIdentifier, BulleIdentifier, Language, GameCommunity } from "../enums";
 import PacketHandler from "./PacketHandler";
 import ClientEvents from "./Events";
@@ -22,6 +22,10 @@ interface ClientOptions {
 	 * The room where the client will be logged in (Default: `1`)
 	 */
 	loginRoom?: string;
+	/**
+	 * The client intents.
+	 */
+	intents?: ClientIntentOptions;
 }
 
 interface RoomJoinOptions {
@@ -38,6 +42,13 @@ interface RoomJoinOptions {
 	 * If given, `language` and `auto` parameters are ignored.
 	 */
 	password?: string;
+}
+
+interface ClientIntentOptions {
+	/**
+	 * Tracks a friend list and emits related events. (Default `true`)
+	 */
+	friendList?: boolean;
 }
 
 /**
@@ -83,6 +94,7 @@ class Client extends EventEmitter {
 	private tribulleId: number;
 	private password: string;
 	protected autoReconnect: boolean;
+	protected intents: ClientIntentOptions;
 	protected whoList: Record<number, string>;
 
 	/**
@@ -97,6 +109,10 @@ class Client extends EventEmitter {
 	 * The client's joined channels.
 	 */
 	channels: string[];
+	/**
+	 * The client's friends.
+	 */
+	friends: Map<string, Friend>;
 	/**
 	 * The client's player.
 	 */
@@ -148,8 +164,11 @@ class Client extends EventEmitter {
 		this.autoReconnect = options?.autoReconnect ?? true;
 		this.language = options?.language || Language.en;
 		this.loginRoom = options?.loginRoom || "1";
+		this.intents = options?.intents || {};
+
 		this.whoList = {};
 		this.channels = [];
+		this.friends = new Map();
 
 		this.loops = {};
 		this.tribulleId = 0;
@@ -230,10 +249,10 @@ class Client extends EventEmitter {
 	/**
 	 * Sends a packet to the community platform (tribulle).
 	 */
-	private sendTribullePacket(code: TribulleIdentifier, packet: ByteArray) {
+	protected sendTribullePacket(code: TribulleIdentifier, packet?: ByteArray) {
 		this.tribulleId = (this.tribulleId % 0x100000000) + 1;
 		const p = new ByteArray().writeShort(code).writeUnsignedInt(this.tribulleId);
-		p.writeBytes(packet);
+		if (packet) p.writeBytes(packet);
 		this.main.send(BulleIdentifier.bulle, p);
 
 		return this.tribulleId;
@@ -507,19 +526,23 @@ class Client extends EventEmitter {
 		);
 	}
 
+
 	/**
-	 * Request friend list.
+	 * Open friend list.
 	 */
-	requestFriendList() {
-		this.sendTribullePacket(TribulleIdentifier.requestFriendList, new ByteArray());
+	openFriendList() {
+		this.sendTribullePacket(TribulleIdentifier.friendListOpenRequest);
 	}
 
 	/**
-	 * Get friend list
+	 * Close friend list.
+	 * @throws When intents.friendList is set.
 	 */
-	async getFriendList() {
-		this.requestFriendList();
-		return (await this.waitFor("friendList"))[0];
+	closeFriendList() {
+		if (this.intents.friendList ?? true) {
+			throw `Cannot close friend list when intents.friendList is set.`;
+		}
+		this.sendTribullePacket(TribulleIdentifier.friendListCloseRequest);
 	}
 
 	/**

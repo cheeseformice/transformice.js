@@ -29,6 +29,7 @@ class TribullePacketHandler {
 	/* -------------------------------------------------------------------------- */
 
 	static [TribulleIdentifier.connect](this: Client) {
+		if (this.intents.friendList ?? true) this.openFriendList();
 		this.emit("ready");
 	}
 
@@ -56,37 +57,62 @@ class TribullePacketHandler {
 	/* -------------------------------------------------------------------------- */
 
 	static [TribulleIdentifier.friendList](this: Client, packet: ByteArray) {
-		const friends = [];
+		if (!(this.intents.friendList ?? true)) return;
+		this.friends.clear();
 
 		const soulmate = new Friend(this).read(packet, true); // soulmate
 		const hasSoulmate = !(soulmate.id == 0 && soulmate.name == "");
-		if (hasSoulmate) friends.push(soulmate);
+		if (hasSoulmate) this.friends.set(soulmate.name, soulmate);
 		let totalFriends = packet.readUnsignedShort();
 
 		while (totalFriends--) {
-			friends.push(new Friend(this).read(packet, false));
+			const friend = new Friend(this).read(packet, false);
+			this.friends.set(friend.name, friend);
 		}
-		this.emit("friendList", friends);
-	}
 
-	static [TribulleIdentifier.friendAdd](this: Client, packet: ByteArray) {
-		this.emit("friendAdd", new Player(this, packet.readUTF()));
-	}
-
-	static [TribulleIdentifier.friendRemove](this: Client, packet: ByteArray) {
-		this.emit("friendRemove", new Player(this, packet.readUTF()));
-	}
-
-	static [TribulleIdentifier.friendConnect](this: Client, packet: ByteArray) {
-		this.emit("friendConnect", packet.readUTF());
-	}
-
-	static [TribulleIdentifier.friendDisconnect](this: Client, packet: ByteArray) {
-		this.emit("friendDisconnect", packet.readUTF());
+		this.emit("friendList", this.friends);
 	}
 
 	static [TribulleIdentifier.friendUpdate](this: Client, packet: ByteArray) {
-		this.emit("friendUpdate", new Friend(this).read(packet, false));
+		const friendNew = new Friend(this).read(packet, false);
+		const friendOld = this.friends.get(friendNew.name);
+		if (!friendOld) return;
+
+		// Not sent by the server, checked locally.
+		friendNew.isSoulmate = friendOld.isSoulmate;
+
+		this.friends.set(friendNew.name, friendNew);
+		this.emit("friendUpdate", friendNew, friendOld);
+	}
+
+	static [TribulleIdentifier.friendAdd](this: Client, packet: ByteArray) {
+		const friend = new Friend(this).read(packet, false);
+		this.friends.set(friend.name, friend);
+		this.emit("friendAdd", friend);
+	}
+
+	static [TribulleIdentifier.friendRemove](this: Client, packet: ByteArray) {
+		const friend = ((id) => {
+			for (const [_, val] of this.friends) {
+				if (val.id === id) return val;
+			}
+		})(packet.readInt());
+		if (!friend) return;
+
+		this.friends.delete(friend.name);
+		this.emit("friendRemove", friend);
+	}
+
+	static [TribulleIdentifier.friendConnect](this: Client, packet: ByteArray) {
+		const friend = this.friends.get(packet.readUTF());
+		if (!friend) return;
+		this.emit("friendConnect", friend);
+	}
+
+	static [TribulleIdentifier.friendDisconnect](this: Client, packet: ByteArray) {
+		const friend = this.friends.get(packet.readUTF());
+		if (!friend) return;
+		this.emit("friendDisconnect", friend);
 	}
 
 	/* -------------------------------------------------------------------------- */

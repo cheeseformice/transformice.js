@@ -144,27 +144,27 @@ interface ClientEvents {
 	/**
 	 * Emitted when the client received the friend list
 	 */
-	friendList: (friends: Friend[]) => void;
+	friendList: (friends: Map<string, Friend>) => void;
+	/**
+	 * Emitted when friend state is changed (e.g. room, gender).
+	 */
+	friendUpdate: (friendNew: Friend, friendOld: Friend) => void;
 	/**
 	 * Emitted when a friend is added to friend list
 	 */
-	friendAdd: (friend: Player) => void;
+	friendAdd: (friend: Friend) => void;
 	/**
 	 * Emitted when a friend is removed from friend list
 	 */
-	friendRemove: (friend: Player) => void;
+	friendRemove: (friend: Friend) => void;
 	/**
 	 * Emitted when a friend is connected
 	 */
-	friendConnect: (name: string) => void;
+	friendConnect: (friend: Friend) => void;
 	/**
 	 * Emitted when a friend is disconnected
 	 */
-	friendDisconnect: (name: string) => void;
-	/**
-	 * Emitted when friend state is changed (e.g. room, gender)
-	 */
-	friendUpdate: (friend: Friend) => void;
+	friendDisconnect: (friend: Friend) => void;
 
 	/* -------------------------------------------------------------------------- */
 	/*                                Chat Channel                                */

@@ -53,7 +53,8 @@ import { Identifier } from "./identifier";
  */
 export enum TribulleIdentifier {
 	connect = 3,
-	requestFriendList = 28,
+	friendListOpenRequest = 28,
+	friendListCloseRequest = 30,
 	whisperSend = 52,
 	whisperReceive = 66,
 	friendConnect = 32,
