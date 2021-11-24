@@ -1,5 +1,6 @@
 import { Connection, ByteArray } from "../utils";
 import {
+	Channel,
 	ChannelMessage,
 	Friend,
 	Member,
@@ -173,15 +174,15 @@ interface ClientEvents {
 	/**
 	 * Emitted when received /who result
 	 */
-	channelWho: (channelName: string, players: Player[], fingerprint: number) => void;
+	channelWho: (channel: Channel, players: Player[], fingerprint: number) => void;
 	/**
 	 * Emitted when client joined a chat channel
 	 */
-	channelJoin: (channelName: string) => void;
+	channelJoin: (channel: Channel) => void;
 	/**
 	 * Emitted when client left a chat channel
 	 */
-	channelLeave: (channelName: string) => void;
+	channelLeave: (channel: Channel) => void;
 	/**
 	 * Emitted when a message is sent to a channel
 	 */

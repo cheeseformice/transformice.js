@@ -127,33 +127,37 @@ class TribullePacketHandler {
 		for (let i = 0; i < playerCount; i++) {
 			players.push(new Player(this, packet.readUTF()));
 		}
-		this.emit("channelWho", this.whoList[fingerprint], players, fingerprint);
+		const channel = this.channels.get(this.whoList[fingerprint]);
+		delete this.whoList[fingerprint];
+		if (!channel) return;
+		this.emit("channelWho", channel, players, fingerprint);
 	}
 
 	static [TribulleIdentifier.channelLeave](this: Client, packet: ByteArray) {
-		const channelName = packet.readUTF();
-		const index = this.channels.findIndex((c) => c === channelName);
-		if (index >= 0) this.channels.splice(index, 1);
-		this.emit("channelLeave", channelName);
+		const channel = this.channels.get(packet.readUTF());
+		if (!channel) return;
+		this.channels.delete(channel.name);
+		this.emit("channelLeave", channel);
 	}
 
 	static [TribulleIdentifier.channelJoin](this: Client, packet: ByteArray) {
-		const channelName = packet.readUTF();
-		this.channels.push(channelName);
-		this.emit("channelJoin", channelName);
+		const channel = new Channel(this, packet.readUTF());
+		this.channels.set(channel.name, channel);
+		this.emit("channelJoin", channel);
 	}
 
 	static [TribulleIdentifier.channelMessage](this: Client, packet: ByteArray) {
 		const author = new Player(this, packet.readUTF());
 		const community = packet.readUnsignedInt();
-		const channelName = packet.readUTF();
+		const channel = this.channels.get(packet.readUTF());
 		const content = packet.readUTF();
+		if (!channel) return;
 		const message = new ChannelMessage(
 			this,
 			author,
 			content,
 			community,
-			new Channel(this, channelName)
+			channel
 		);
 		this.emit("channelMessage", message);
 	}

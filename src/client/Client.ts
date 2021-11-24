@@ -2,7 +2,7 @@ import got from "got";
 import { EventEmitter } from "events";
 
 import { ByteArray, Connection, SHAKikoo } from "../utils";
-import { Friend, Room, RoomPlayer } from "../structures";
+import { Channel, Friend, Room, RoomPlayer } from "../structures";
 import { TribulleIdentifier, BulleIdentifier, Language, GameCommunity } from "../enums";
 import PacketHandler from "./PacketHandler";
 import ClientEvents from "./Events";
@@ -108,7 +108,7 @@ class Client extends EventEmitter {
 	/**
 	 * The client's joined channels.
 	 */
-	channels: string[];
+	channels: Map<string, Channel>;
 	/**
 	 * The client's friends.
 	 */
@@ -167,7 +167,7 @@ class Client extends EventEmitter {
 		this.intents = options?.intents || {};
 
 		this.whoList = {};
-		this.channels = [];
+		this.channels = new Map();
 		this.friends = new Map();
 
 		this.loops = {};
@@ -461,7 +461,7 @@ class Client extends EventEmitter {
 	 */
 	async getChannelPlayers(channelName: string) {
 		const fingerPrint = this.requestWho(channelName);
-		return (await this.waitFor("channelWho", (n, p, f) => f === fingerPrint))[1];
+		return (await this.waitFor("channelWho", (_n, _p, f) => f === fingerPrint))[1];
 	}
 
 	/**
