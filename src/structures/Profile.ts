@@ -39,6 +39,7 @@ export default class Profile extends Player {
 	}[];
 	orbId!: number;
 	orbs!: number[];
+	hasAdventure!: boolean;
 	adventurePoints!: number;
 
 	/**
@@ -119,6 +120,7 @@ export default class Profile extends Player {
 			this.orbs.push(packet.readByte());
 		}
 
+		this.hasAdventure = packet.readBoolean();
 		this.adventurePoints = packet.readInt();
 
 		return this;
