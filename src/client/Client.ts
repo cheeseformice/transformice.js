@@ -177,51 +177,6 @@ class Client extends EventEmitter {
 	}
 
 	/**
-	 *  Wait for specific event to be emitted
-	 */
-	protected waitFor<T extends keyof ClientEvents>(
-		eventName: T,
-		timeout?: number,
-		condition?: (...args: Parameters<ClientEvents[T]>) => boolean
-	): Promise<Parameters<ClientEvents[T]>>;
-	protected waitFor<T extends keyof ClientEvents>(
-		eventName: T,
-		condition?: (...args: Parameters<ClientEvents[T]>) => boolean,
-		timeout?: number
-	): Promise<Parameters<ClientEvents[T]>>;
-	protected waitFor<
-		T extends keyof ClientEvents,
-		Callback extends (...args: Parameters<ClientEvents[T]>) => boolean
-	>(
-		eventName: T,
-		timeoutOrCondition: number | Callback = 5000,
-		conditionOrTimeout?: Callback | number
-	) {
-		let timeout = 5000;
-		let condition: Callback | undefined = undefined;
-		if (typeof timeoutOrCondition === "number") timeout = timeoutOrCondition;
-		else if (typeof timeoutOrCondition === "function") condition = timeoutOrCondition;
-		if (typeof conditionOrTimeout === "number") timeout = conditionOrTimeout;
-		else if (typeof conditionOrTimeout === "function") condition = conditionOrTimeout;
-
-		return new Promise<Parameters<ClientEvents[T]>>((resolve, reject) => {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const listener = (...args: any) => {
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				if (!condition) resolve(args);
-				else if (condition && condition(...args)) resolve(args);
-			};
-
-			this.once(eventName, listener);
-			setTimeout(() => {
-				this.removeListener(eventName, listener);
-				reject(new Error("Timed out"));
-			}, timeout);
-		});
-	}
-
-	/**
 	 * Handles the old packets and emits events.
 	 */
 	protected handleOldPacket(conn: Connection, ccc: number, data: string[]) {
@@ -366,6 +321,51 @@ class Client extends EventEmitter {
 		});
 		let ports = this.ports;
 		this.main.connect(this.host, ports[~~(Math.random() * ports.length)]);
+	}
+
+	/**
+	 *  Wait for specific event to be emitted
+	 */
+	waitFor<T extends keyof ClientEvents>(
+		eventName: T,
+		timeout?: number,
+		condition?: (...args: Parameters<ClientEvents[T]>) => boolean
+	): Promise<Parameters<ClientEvents[T]>>;
+	waitFor<T extends keyof ClientEvents>(
+		eventName: T,
+		condition?: (...args: Parameters<ClientEvents[T]>) => boolean,
+		timeout?: number
+	): Promise<Parameters<ClientEvents[T]>>;
+	waitFor<
+		T extends keyof ClientEvents,
+		Callback extends (...args: Parameters<ClientEvents[T]>) => boolean
+	>(
+		eventName: T,
+		timeoutOrCondition: number | Callback = 5000,
+		conditionOrTimeout?: Callback | number
+	) {
+		let timeout = 5000;
+		let condition: Callback | undefined = undefined;
+		if (typeof timeoutOrCondition === "number") timeout = timeoutOrCondition;
+		else if (typeof timeoutOrCondition === "function") condition = timeoutOrCondition;
+		if (typeof conditionOrTimeout === "number") timeout = conditionOrTimeout;
+		else if (typeof conditionOrTimeout === "function") condition = conditionOrTimeout;
+
+		return new Promise<Parameters<ClientEvents[T]>>((resolve, reject) => {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const listener = (...args: any) => {
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				if (!condition) resolve(args);
+				else if (condition && condition(...args)) resolve(args);
+			};
+
+			this.once(eventName, listener);
+			setTimeout(() => {
+				this.removeListener(eventName, listener);
+				reject(new Error("Timed out"));
+			}, timeout);
+		});
 	}
 
 	/**
