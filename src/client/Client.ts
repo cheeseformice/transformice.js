@@ -9,7 +9,7 @@ import ClientEvents from "./Events";
 import TribullePacketHandler from "./TribullePacketHandler";
 import OldPacketHandler from "./OldPacketHandler";
 
-interface ClientOptions {
+export interface ClientOptions {
 	/**
 	 * Will try to auto reconnect when disconnected if set to true (Default: `true`)
 	 */
@@ -28,7 +28,7 @@ interface ClientOptions {
 	intents?: ClientIntentOptions;
 }
 
-interface RoomJoinOptions {
+export interface RoomJoinOptions {
 	/**
 	 * Lets the server decide which room to join. (Default: `false`)
 	 */
@@ -44,7 +44,7 @@ interface RoomJoinOptions {
 	password?: string;
 }
 
-interface ClientIntentOptions {
+export interface ClientIntentOptions {
 	/**
 	 * Tracks a friend list and emits related events. (Default `true`)
 	 */
