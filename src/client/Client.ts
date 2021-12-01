@@ -497,8 +497,8 @@ class Client extends EventEmitter {
 	/**
 	 * Sends a request to the server to join a room with specific name.
 	 */
-	enterRoom(name: string, options: RoomJoinOptions) {
-		if (options.password) {
+	enterRoom(name: string, options?: RoomJoinOptions) {
+		if (options?.password) {
 			this.main.send(
 				BulleIdentifier.roomPassworded,
 				new ByteArray()
@@ -509,9 +509,9 @@ class Client extends EventEmitter {
 			this.main.send(
 				BulleIdentifier.room,
 				new ByteArray()
-					.writeUTF(options.language ?? this.language)
+					.writeUTF(options?.language ?? this.language)
 					.writeUTF(name)
-					.writeBoolean(options.auto ?? false)
+					.writeBoolean(options?.auto ?? false)
 			);
 		}
 	}
