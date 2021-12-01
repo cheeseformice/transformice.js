@@ -22,7 +22,8 @@ Maintenance of the module has moved to [Cheeseformice](https://github.com/cheese
 - `BREAKING` Targets minimally ES6 CommonJS now.
 - `BREAKING` Changed all the typing for `enums` to use TypeScript enums instead of plain JS objects. Renamed several enum type names.
 - `BREAKING` Separated `bulleConnectionError` from the regular `connectionError` event.
-- `BREAKING` `WhisperMessage.sentTo` changed from a string to `ChatPlayer`. `Friend` now inherits from `ChatPlayer`. This allows direct matching to be done without .toLowerCase(), e.g.
+- `BREAKING` Renamed `ChatCommunity` to `TribulleCommunity`.
+- `BREAKING` `WhisperMessage.sentTo` changed from a string to `TribullePlayer`. `Friend`, `Member` now inherits from `TribullePlayer`. This allows direct matching to be done without .toLowerCase(), e.g.
 ```js
 client.on("whisper", (message) => {
     const toSelf = message.client.name === message.sentTo.name;
