@@ -2,13 +2,12 @@ import Client from "./Client";
 import {
 	Channel,
 	ChannelMessage,
-	ChatPlayer,
+	TribullePlayer,
 	Friend,
 	Member,
-	Message,
-	Player,
 	Tribe,
 	WhisperMessage,
+	TribulleMessage,
 } from "../structures";
 import { TribulleIdentifier } from "../enums";
 import { ByteArray } from "../utils";
@@ -54,9 +53,9 @@ class TribullePacketHandler {
 		const content = packet.readUTF();
 		const message = new WhisperMessage(
 			this,
-			new ChatPlayer(this, author),
+			new TribullePlayer(this, author),
 			community,
-			new ChatPlayer(this, sentTo),
+			new TribullePlayer(this, sentTo),
 			content
 		);
 		this.emit("whisper", message);
@@ -132,9 +131,9 @@ class TribullePacketHandler {
 		const fingerprint = packet.readUnsignedInt();
 		packet.readUnsignedByte();
 		const playerCount = packet.readUnsignedShort();
-		const players: Player[] = [];
+		const players: TribullePlayer[] = [];
 		for (let i = 0; i < playerCount; i++) {
-			players.push(new Player(this, packet.readUTF()));
+			players.push(new TribullePlayer(this, packet.readUTF()));
 		}
 		const channel = this.channels.get(this.whoList[fingerprint]);
 		delete this.whoList[fingerprint];
@@ -156,7 +155,7 @@ class TribullePacketHandler {
 	}
 
 	static [TribulleIdentifier.channelMessage](this: Client, packet: ByteArray) {
-		const author = new Player(this, packet.readUTF());
+		const author = new TribullePlayer(this, packet.readUTF());
 		const community = packet.readUnsignedInt();
 		const channel = this.channels.get(packet.readUTF());
 		const content = packet.readUTF();
@@ -176,8 +175,8 @@ class TribullePacketHandler {
 	/* -------------------------------------------------------------------------- */
 
 	static [TribulleIdentifier.tribeMessage](this: Client, packet: ByteArray) {
-		const author = new Player(this, packet.readUTF());
-		const message = new Message(this, author, packet.readUTF());
+		const author = new TribullePlayer(this, packet.readUTF());
+		const message = new TribulleMessage(this, author, packet.readUTF());
 		this.emit("tribeMessage", message);
 	}
 

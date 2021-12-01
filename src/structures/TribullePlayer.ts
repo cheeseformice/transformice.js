@@ -2,7 +2,7 @@ import Player from "./Player";
 import Client from "../client";
 
 /** Represents a player reported by the community platform. */
-export default class ChatPlayer extends Player {
+export default class TribullePlayer extends Player {
 	/**
 	 * The raw player's name, as directly reported by the community platform.
 	 */

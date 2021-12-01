@@ -1,10 +1,10 @@
 import Client from "../client";
 import { Game, Gender } from "../enums";
 import { ByteArray } from "../utils";
-import ChatPlayer from "./ChatPlayer";
+import TribullePlayer from "./TribullePlayer";
 
 /** Represents a friend from the friend list */
-export default class Friend extends ChatPlayer {
+export default class Friend extends TribullePlayer {
 	/**
 	 * The player's id
 	 */

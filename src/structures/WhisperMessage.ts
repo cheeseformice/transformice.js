@@ -1,23 +1,23 @@
-import { ChatPlayer, Message } from ".";
+import { TribullePlayer, TribulleMessage } from ".";
 import Client from "../client";
-import { ChatCommunity } from "../enums";
+import { TribulleCommunity } from "../enums";
 
 /** Represents a whisper message. */
-export default class WhisperMessage extends Message {
+export default class WhisperMessage extends TribulleMessage {
 	/**
 	 * The player name who sent to them.
 	 */
-	sentTo: ChatPlayer;
-	community: ChatCommunity;
+	sentTo: TribullePlayer;
+	community: TribulleCommunity;
 
 	/**
 	 * @hidden
 	 */
 	constructor(
 		client: Client,
-		author: ChatPlayer,
-		community: ChatCommunity,
-		sentTo: ChatPlayer,
+		author: TribullePlayer,
+		community: TribulleCommunity,
+		sentTo: TribullePlayer,
 		content: string
 	) {
 		super(client, author, content);

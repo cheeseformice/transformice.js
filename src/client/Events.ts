@@ -4,13 +4,14 @@ import {
 	ChannelMessage,
 	Friend,
 	Member,
-	Message,
 	Player,
 	Profile,
 	Room,
 	RoomMessage,
 	RoomPlayer,
 	Tribe,
+	TribulleMessage,
+	TribullePlayer,
 	WhisperMessage,
 } from "../structures";
 import { Language } from "../enums";
@@ -178,7 +179,7 @@ interface ClientEvents {
 	/**
 	 * Emitted when received /who result
 	 */
-	channelWho: (channel: Channel, players: Player[], fingerprint: number) => void;
+	channelWho: (channel: Channel, players: TribullePlayer[], fingerprint: number) => void;
 	/**
 	 * Emitted when client joined a chat channel
 	 */
@@ -203,7 +204,7 @@ interface ClientEvents {
 	/**
 	 * Emitted when a tribe message is received
 	 */
-	tribeMessage: (message: Message) => void;
+	tribeMessage: (message: TribulleMessage) => void;
 	/**
 	 * Emitted when a tribe member connected
 	 */

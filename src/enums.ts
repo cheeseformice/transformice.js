@@ -127,8 +127,8 @@ export enum GameCommunity {
 	pt = 31,
 }
 
-/** Chat communities used by the community platform for whispers and channels */
-export enum ChatCommunity {
+/** Communities used by the community platform for whispers and channels */
+export enum TribulleCommunity {
 	int = 0,
 	en = 1,
 	fr = 2,

@@ -1,13 +1,13 @@
-import { ChatCommunity } from "../enums";
-import { Player, Message, Channel } from ".";
+import { Channel, TribullePlayer, TribulleMessage } from ".";
 import Client from "../client";
+import { TribulleCommunity } from "../enums";
 
 /** Represents a Channel message. */
-export default class ChannelMessage extends Message {
+export default class ChannelMessage extends TribulleMessage {
 	/**
 	 * Community of the author that sends the message
 	 */
-	community: ChatCommunity;
+	community: TribulleCommunity;
 	/**
 	 * The Channel the message is sent to
 	 */
@@ -18,9 +18,9 @@ export default class ChannelMessage extends Message {
 	 */
 	constructor(
 		client: Client,
-		author: Player,
+		author: TribullePlayer,
 		content: string,
-		community: ChatCommunity,
+		community: TribulleCommunity,
 		channel: Channel
 	) {
 		super(client, author, content);

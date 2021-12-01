@@ -1,10 +1,10 @@
 import { ByteArray } from "../utils";
 import { Gender } from "../enums";
 import Client from "../client";
-import { Tribe, Player } from ".";
+import { Tribe, TribullePlayer } from ".";
 
 /** Represents a tribe member */
-export default class Member extends Player {
+export default class Member extends TribullePlayer {
 	/**
 	 * The member's tribe
 	 */
