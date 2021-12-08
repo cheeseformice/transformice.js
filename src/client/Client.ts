@@ -308,11 +308,6 @@ class Client extends EventEmitter {
 				this.main.emit("error", err);
 			}
 		});
-		this.main.once("close", async () => {
-			if (this.autoReconnect) {
-				this.restart();
-			}
-		});
 		this.main.on("error", async (err: Error) => {
 			this.emit("connectionError", err);
 			if (this.autoReconnect) {

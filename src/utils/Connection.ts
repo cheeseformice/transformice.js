@@ -62,6 +62,7 @@ export default class Connection extends EventEmitter {
 		});
 
 		this.socket.once("close", () => {
+			this.emit("error", new Error("Connection closed."));
 			this.emit("close");
 		});
 
