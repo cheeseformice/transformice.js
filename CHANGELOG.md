@@ -3,7 +3,7 @@ This project adheres to [Semantic Versioning (semver)](https://semver.org/spec/v
 
 It is recommended to keep the client up-to-date with latest versions to avoid possible breakage with each update to the game's protocol.
 
-## 1.0.0-rc - Unreleased
+## 1.0.0-rc.1 - 2021-12-09
 Maintenance of the module has moved to [Cheeseformice](https://github.com/cheeseformice/transformice.js). The package is renamed to `@cheeseformice/transformice.js`.
 
 ## Added
@@ -38,6 +38,7 @@ client.on("whisper", (message) => {
 ## Fixed
 - Login now works with Transformice protocol to date.
 - Removed an accidental delay when the bulle server connection failed.
+- Fixes: Sometimes `connectionError` event does not fire when the server shuts down.
 
 ## 1.0.0-beta.1 - 2021-01-04
 This is the initial beta version by SuspiciousLookingOwl.

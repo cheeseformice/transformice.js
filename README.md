@@ -1,7 +1,5 @@
 # Transformice.js (WIP)
 
-**NOTICE: The client is still in the Beta stage and may be prone to merciless API compatibility breakage.**
-
 Transformice.js is a [Node.js](https://nodejs.org) Client for Transformice that allows you to create bots. It comes with full support for CommonJS and Typescript typings.
 
 <!-- WIP -->
