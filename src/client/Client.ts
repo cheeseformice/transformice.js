@@ -26,6 +26,10 @@ export interface ClientOptions {
 	 * The client intents.
 	 */
 	intents?: ClientIntentOptions;
+	/**
+	 * The client connection settings. The default is to fetch these from an API endpoint (`Client.fetchIP`)
+	 */
+	connectionSettings?: ConnectionSettings | ((...args: any) => ConnectionSettings | Promise<ConnectionSettings>)
 }
 
 export interface RoomJoinOptions {
@@ -49,6 +53,17 @@ export interface ClientIntentOptions {
 	 * Tracks a friend list and emits related events. (Default `true`)
 	 */
 	friendList?: boolean;
+}
+
+export interface ConnectionSettings {
+	/**
+	 * The IP address of the main server.
+	 */
+	ip: string;
+	/**
+	 * An array of ports to try connecting to.
+	 */
+	ports: number[];
 }
 
 /**
@@ -96,6 +111,7 @@ class Client extends EventEmitter {
 	protected autoReconnect: boolean;
 	protected intents: ClientIntentOptions;
 	protected whoList: Record<number, string>;
+	protected connectionSettings: ConnectionSettings | ((...args: any) => ConnectionSettings | Promise<ConnectionSettings>);
 
 	/**
 	 * The online players when the bot log.
@@ -165,6 +181,7 @@ class Client extends EventEmitter {
 		this.language = options?.language || Language.en;
 		this.loginRoom = options?.loginRoom || "1";
 		this.intents = options?.intents || {};
+		this.connectionSettings = options?.connectionSettings || Client.fetchIP;
 
 		this.whoList = {};
 		this.channels = new Map();
@@ -243,37 +260,6 @@ class Client extends EventEmitter {
 	}
 
 	/**
-	 * Get Transformice IP
-	 */
-	private async fetchIP() {
-		const result = await got("https://api.tocuto.tk/tfm/get/ip").json() as
-		{ success: false, error: string } | {
-			success: true,
-			internal_error: true,
-			internal_error_step: number
-		} | {
-			success: true,
-			internal_error?: false,
-			server: {
-				ip: string,
-				ports: number[]
-			}
-		};
-		if (result.success) {
-			if (!result.internal_error) {
-				this.ports = result.server.ports;
-				this.host = result.server.ip;
-			} else {
-				if (result.internal_error_step === 2)
-					throw new Error("The game might be in maintenance mode.");
-				throw new Error("An internal error occur: " + result.internal_error_step);
-			}
-		} else {
-			throw new Error("Can't get the IP : " + result.error);
-		}
-	}
-
-	/**
 	 * Log in to the game.
 	 */
 	private login(name: string, password: string, room: string) {
@@ -314,7 +300,7 @@ class Client extends EventEmitter {
 				this.restart();
 			}
 		});
-		let ports = this.ports;
+		const ports = this.ports;
 		this.main.connect(this.host, ports[~~(Math.random() * ports.length)]);
 	}
 
@@ -382,7 +368,15 @@ class Client extends EventEmitter {
 	 * Starts the client.
 	 */
 	async run() {
-		await this.fetchIP();
+		// Grab the connection settings and save it
+		let settings: ConnectionSettings;
+		if (typeof this.connectionSettings === "function") {
+			settings = await this.connectionSettings();
+		} else {
+			settings = this.connectionSettings;
+		}
+		this.host = settings.ip;
+		this.ports = settings.ports;
 		this.connect();
 	}
 
@@ -394,6 +388,39 @@ class Client extends EventEmitter {
 		this.disconnect();
 		await new Promise((r) => setTimeout(r, 15 * 1000));
 		this.connect();
+	}
+
+	/**
+	 * Get Transformice IP and ports.
+	 */
+	static async fetchIP() {
+		const result = await got("https://api.tocuto.tk/tfm/get/ip").json() as
+			{ success: false, error: string } | {
+				success: true,
+				internal_error: true,
+				internal_error_step: number
+			} | {
+				success: true,
+				internal_error?: false,
+				server: {
+					ip: string,
+					ports: number[]
+				}
+			};
+		if (result.success) {
+			if (!result.internal_error) {
+				return {
+					ip: result.server.ip,
+					ports: result.server.ports
+				} as ConnectionSettings;
+			} else {
+				if (result.internal_error_step === 2)
+					throw new Error("The game might be in maintenance mode.");
+				throw new Error("An internal error occur: " + result.internal_error_step);
+			}
+		} else {
+			throw new Error("Can't get the IP: " + result.error);
+		}
 	}
 
 	/**
