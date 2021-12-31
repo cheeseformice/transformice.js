@@ -3,6 +3,10 @@ This project adheres to [Semantic Versioning (semver)](https://semver.org/spec/v
 
 It is recommended to keep the client up-to-date with latest versions to avoid possible breakage with each update to the game's protocol.
 
+## 1.0.0-rc.2 - 2021-12-31
+## Added
+- Supports alternative IP fetching strategy using client options.
+
 ## 1.0.0-rc.1 - 2021-12-09
 Maintenance of the module has moved to [Cheeseformice](https://github.com/cheeseformice/transformice.js). The package is renamed to `@cheeseformice/transformice.js`.
 
