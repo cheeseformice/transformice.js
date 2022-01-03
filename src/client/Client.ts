@@ -394,7 +394,7 @@ class Client extends EventEmitter {
 	 * Get Transformice IP and ports.
 	 */
 	static async fetchIP() {
-		const result = await got("https://api.tocuto.tk/tfm/get/ip").json() as
+		const result = await got("https://cheese.formice.com/api/tfm/ip").json() as
 			{ success: false, error: string } | {
 				success: true,
 				internal_error: true,
