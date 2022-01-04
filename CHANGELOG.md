@@ -3,14 +3,22 @@ This project adheres to [Semantic Versioning (semver)](https://semver.org/spec/v
 
 It is recommended to keep the client up-to-date with latest versions to avoid possible breakage with each update to the game's protocol.
 
+<!--## 1.0.1-beta.1 - Unreleased-->
+
+## 1.0.0 - 2022-01-04
+Docs site has been re-published, check it out [here](https://cheeseformice.github.io/transformice.js/).
+
+### Fixed
+- Default connection settings endpoint wasn't working. Switched to using Cheeseformice's endpoint.
+
 ## 1.0.0-rc.2 - 2021-12-31
-## Added
+### Added
 - Supports alternative IP fetching strategy using client options.
 
 ## 1.0.0-rc.1 - 2021-12-09
 Maintenance of the module has moved to [Cheeseformice](https://github.com/cheeseformice/transformice.js). The package is renamed to `@cheeseformice/transformice.js`.
 
-## Added
+### Added
 - Supports accounts with Bot role.
 - `Client` supports option `password` to set the default login room.
 - ByteArray can work natively with Node `Buffer`, with support for `readBufBytes` and `writeBufBytes`.
@@ -21,7 +29,7 @@ Maintenance of the module has moved to [Cheeseformice](https://github.com/cheese
 - Supports a maintained `Client.friends` list when the intent `friendList` is not disabled.
 - Added `tribulleConnect` event triggered on tribulle connection packet. This is equivalent to `ready` prior to this.
 
-## Changes
+### Changes
 - `BREAKING` Dropped support for authentication keys login. You must use a approved bot account now.
 - `BREAKING` Targets minimally ES6 CommonJS now.
 - `BREAKING` Changed all the typing for `enums` to use TypeScript enums instead of plain JS objects. Renamed several enum type names.
@@ -39,7 +47,7 @@ client.on("whisper", (message) => {
 - Exposed `Client` main and bulle connections. This is useful for debugging server connections.
 - `ready` event waits for the friend list to be populated before emitting (only for `friendList` intent users). Use `tribulleConnect` event for the prior definition of `ready`.
 
-## Fixed
+### Fixed
 - Login now works with Transformice protocol to date.
 - Removed an accidental delay when the bulle server connection failed.
 - Fixes: Sometimes `connectionError` event does not fire when the server shuts down.
