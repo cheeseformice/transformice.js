@@ -2,8 +2,8 @@
 module.exports = {
 	title: "Transformice.js",
 	tagline: "Transformice.js is a Node.js Client for Transformice that allows you to create bots.",
-	url: "https://github.com/cheeseformice/transformice.js",
-	baseUrl: "/",
+	url: "https://cheeseformice.github.io",
+	baseUrl: "/transformice.js/",
 	onBrokenLinks: "warn",
 	onBrokenMarkdownLinks: "warn",
 	favicon: "img/favicon.ico",
