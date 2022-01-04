@@ -2,8 +2,8 @@
 
 Transformice.js is a [Node.js](https://nodejs.org) Client for Transformice that allows you to create bots. It comes with full support for CommonJS and Typescript typings.
 
-[Read the docs](https://cheeseformice.github.io/transformice.js/)
-[Read the changelogs](https://github.com/cheeseformice/transformice.js/blob/main/CHANGELOG.md)
+- [Read the docs](https://cheeseformice.github.io/transformice.js/)
+- [Read the changelogs](https://github.com/cheeseformice/transformice.js/blob/main/CHANGELOG.md)
 
 Transformice.js is originally created and maintained by [SuspiciousLookingOwl](https://github.com/SuspiciousLookingOwl/transformice.js). This is the maintained continuation on Cheeseformice.
 
