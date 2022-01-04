@@ -5,7 +5,7 @@ sidebar_label: Quick Start
 slug: /
 ---
 
-## Installation 
+## Installation
 ```
 npm i transformice.js
 ```
