@@ -6,17 +6,17 @@ slug: /
 ---
 
 ## Installation
-```
-npm i transformice.js
+```bash
+npm i @cheeseformice/transformice.js
 ```
 
 ## Example
 
 ```js
-const { Client, enums } = require("transformice.js");
+const { Client, enums } = require("@cheeseformice/transformice.js");
 
 const client = new Client("username", "password", {
-	language: enums.languages.en
+	language: enums.Languages.en
 });
 
 client.on("roomMessage", (message) => {
@@ -28,6 +28,6 @@ client.run();
 ```
 
 ## Quick Links
-- [Client API](api/classes/client)
-- [Client Events](api/interfaces/clientevents)
-- [Enums](api/globals#variables-1)
+- [Client API](api/classes/Client)
+- [Client Events](api/interfaces/Internal.ClientEvents)
+- [Enums](api/namespaces/enums)

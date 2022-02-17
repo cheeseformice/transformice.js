@@ -9,6 +9,7 @@ module.exports = {
 	favicon: "img/favicon.ico",
 	organizationName: "Cheeseformice", // Usually your GitHub org/user name.
 	projectName: "Transformice.js", // Usually your repo name.
+	/** @type {import('@docusaurus/preset-classic').ThemeConfig} */
 	themeConfig: {
 		navbar: {
 			title: "Transformice.js",
@@ -57,7 +58,7 @@ module.exports = {
 			({
 				entryPoints: ['../src/index.ts'],
 				//entryPointStrategy: "expand",
-        		tsconfig: '../tsconfig.json',
+				tsconfig: '../tsconfig.json',
 				excludePrivate: true,
 				excludeProtected: true,
 				excludeExternals: true,
