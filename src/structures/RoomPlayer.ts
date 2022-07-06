@@ -142,6 +142,9 @@ export default class RoomPlayer extends Player {
 		packet.readUnsignedInt(); // Unknown int
 		const color = packet.readUnsignedInt();
 		this.nameColor = color === 0xffffffff ? -1 : color;
+		
+		packet.readByte(); // Unknown byte
+		
 		return this;
 	}
 }
