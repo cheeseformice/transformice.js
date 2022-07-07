@@ -25,9 +25,9 @@ export default class RoomPlayer extends Player {
 	 */
 	titleStars: number;
 	/**
-	 * Whether or not the player has a cheese.
+	 * The number of cheeses that the player is carrying.
 	 */
-	hasCheese: boolean;
+	cheeses: number;
 	/**
 	 * Whether or not the player is dead.
 	 */
@@ -88,6 +88,17 @@ export default class RoomPlayer extends Player {
 	 * Whether or not the player is in the air.
 	 */
 	isJumping: boolean;
+	/**
+	 * The player's current respawn ID.
+	 */
+	respawnId: number;
+
+	/**
+	 * Whether or not the player has a cheese.
+	 */
+	get hasCheese() {
+		return this.cheeses > 0;
+	}
 
 	/**
 	 * @hidden
@@ -99,7 +110,7 @@ export default class RoomPlayer extends Player {
 		this.pcode = 0;
 		this.title = 0;
 		this.titleStars = 0;
-		this.hasCheese = false;
+		this.cheeses = 0;
 		this.isDead = false;
 		this.isShaman = false;
 		this.isVampire = false;
@@ -116,6 +127,7 @@ export default class RoomPlayer extends Player {
 		this.vx = 0;
 		this.vy = 0;
 		this.isJumping = false;
+		this.respawnId = 0;
 	}
 
 	/**
@@ -125,26 +137,26 @@ export default class RoomPlayer extends Player {
 	 */
 	read(packet: ByteArray) {
 		this.name = packet.readUTF();
-		this.pcode = packet.readUnsignedInt();
+		this.pcode = packet.readInt();
 		this.isShaman = packet.readBoolean();
-		this.isDead = packet.readBoolean();
-		this.score = packet.readUnsignedShort();
-		this.hasCheese = packet.readBoolean();
-		this.title = packet.readUnsignedShort();
+		const deathNum = packet.readByte(); // Unsure what values above 1 mean
+		this.isDead = deathNum > 0;
+		this.score = packet.readShort();
+		this.cheeses = packet.readByte();
+		this.title = packet.readShort();
 		this.titleStars = packet.readByte() - 1;
 		this.gender = packet.readByte();
 
-		packet.readUTF(); // Unknown string
+		packet.readUTF(); // Unknown string '0'
 		this.look = packet.readUTF();
 		packet.readBoolean(); // Unknown boolean
-		this.mouseColor = packet.readUnsignedInt();
-		this.shamanColor = packet.readUnsignedInt();
+		this.mouseColor = packet.readInt();
+		this.shamanColor = packet.readInt();
 		packet.readUnsignedInt(); // Unknown int
-		const color = packet.readUnsignedInt();
+		const color = packet.readInt();
 		this.nameColor = color === 0xffffffff ? -1 : color;
-		
-		packet.readByte(); // Unknown byte
-		
+		this.respawnId = packet.readUnsignedByte();
+
 		return this;
 	}
 }
