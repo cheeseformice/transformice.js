@@ -3,7 +3,17 @@ This project adheres to [Semantic Versioning (semver)](https://semver.org/spec/v
 
 It is recommended to keep the client up-to-date with latest versions to avoid possible breakage with each update to the game's protocol.
 
-<!--## 1.0.1-beta.1 - Unreleased-->
+<!--## 1.1.0-beta.1 - Unreleased-->
+
+## 1.0.1 - 2022-07-07
+This release includes some important fixes to run on the latest protocol.
+
+### Added
+- `RoomPlayer`: New properties, `cheeses` and `respawnId`.
+
+### Fixed
+- Fixes: player list parsing was broken due to wrong offsets. ([#5](https://github.com/cheeseformice/transformice.js/pull/5), @entibo)
+- `RoomPlayer`: Negative scores were not registered correctly.
 
 ## 1.0.0 - 2022-01-04
 Docs site has been re-published, check it out [here](https://cheeseformice.github.io/transformice.js/).
