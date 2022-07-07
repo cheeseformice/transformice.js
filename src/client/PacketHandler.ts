@@ -167,7 +167,7 @@ class PacketHandler {
 	static [BulleIdentifier.roomPlayerGetCheese](this: Client, _conn: Connection, packet: ByteArray) {
 		const player = this.room.getPlayer(packet.readInt());
 		if (player) {
-			player.hasCheese = packet.readBoolean();
+			player.cheeses = packet.readByte();
 			this.emit("roomPlayerGetCheese", player);
 		}
 	}
