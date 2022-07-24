@@ -29,7 +29,9 @@ export interface ClientOptions {
 	/**
 	 * The client connection settings. The default is to fetch these from an API endpoint (`Client.fetchIP`)
 	 */
-	connectionSettings?: ConnectionSettings | ((...args: any) => ConnectionSettings | Promise<ConnectionSettings>)
+	connectionSettings?:
+		| ConnectionSettings
+		| ((...args: any) => ConnectionSettings | Promise<ConnectionSettings>);
 }
 
 export interface RoomJoinOptions {
@@ -111,7 +113,9 @@ class Client extends EventEmitter {
 	protected autoReconnect: boolean;
 	protected intents: ClientIntentOptions;
 	protected whoList: Record<number, string>;
-	protected connectionSettings: ConnectionSettings | ((...args: any) => ConnectionSettings | Promise<ConnectionSettings>);
+	protected connectionSettings:
+		| ConnectionSettings
+		| ((...args: any) => ConnectionSettings | Promise<ConnectionSettings>);
 
 	/**
 	 * The online players when the bot log.
@@ -394,24 +398,30 @@ class Client extends EventEmitter {
 	 * Get Transformice IP and ports.
 	 */
 	static async fetchIP() {
-		const result = await got("https://cheese.formice.com/api/tfm/ip").json() as
-			{ success: false, error: string } | {
-				success: true,
-				internal_error: true,
-				internal_error_step: number
-			} | {
-				success: true,
-				internal_error?: false,
-				server: {
-					ip: string,
-					ports: number[]
-				}
-			};
+		const result = (await got("https://cheese.formice.com/api/tfm/ip", {
+			timeout: {
+				request: 3000,
+			},
+		}).json()) as
+			| { success: false; error: string }
+			| {
+					success: true;
+					internal_error: true;
+					internal_error_step: number;
+			  }
+			| {
+					success: true;
+					internal_error?: false;
+					server: {
+						ip: string;
+						ports: number[];
+					};
+			  };
 		if (result.success) {
 			if (!result.internal_error) {
 				return {
 					ip: result.server.ip,
-					ports: result.server.ports
+					ports: result.server.ports,
 				} as ConnectionSettings;
 			} else {
 				if (result.internal_error_step === 2)
@@ -427,7 +437,10 @@ class Client extends EventEmitter {
 	 * Sends a message to tribe
 	 */
 	sendTribeMessage(message: string) {
-		this.sendTribullePacket(TribulleIdentifier.tribeSendMessage, new ByteArray().writeUTF(message));
+		this.sendTribullePacket(
+			TribulleIdentifier.tribeSendMessage,
+			new ByteArray().writeUTF(message)
+		);
 	}
 
 	/**
@@ -523,9 +536,7 @@ class Client extends EventEmitter {
 		if (options?.password) {
 			this.main.send(
 				BulleIdentifier.roomPassworded,
-				new ByteArray()
-					.writeUTF(options.password)
-					.writeUTF(name)
+				new ByteArray().writeUTF(options.password).writeUTF(name)
 			);
 		} else {
 			this.main.send(
@@ -583,14 +594,20 @@ class Client extends EventEmitter {
 	 * Add a player to friend list
 	 */
 	addFriend(name: string) {
-		this.sendTribullePacket(TribulleIdentifier.friendAddRequest, new ByteArray().writeUTF(name));
+		this.sendTribullePacket(
+			TribulleIdentifier.friendAddRequest,
+			new ByteArray().writeUTF(name)
+		);
 	}
 
 	/**
 	 * Add a player to friend list
 	 */
 	removeFriend(name: string) {
-		this.sendTribullePacket(TribulleIdentifier.friendRemoveRequest, new ByteArray().writeUTF(name));
+		this.sendTribullePacket(
+			TribulleIdentifier.friendRemoveRequest,
+			new ByteArray().writeUTF(name)
+		);
 	}
 
 	/**
