@@ -454,9 +454,13 @@ class Client extends EventEmitter {
 	 * Load a lua script in the room.
 	 */
 	loadLua(script: string) {
-		const length = Buffer.byteLength(script);
-		const p = new ByteArray().writeUnsignedShort(length >> 8).writeUnsignedByte(length & 255);
-		this.bulle.send(BulleIdentifier.loadLua, p);
+		const buf = Buffer.from(script, "utf8");
+		const length = buf.byteLength;
+		const p = new ByteArray()
+			.writeUnsignedByte(length >> 16 & 255)
+			.writeUnsignedByte(length >> 8 & 255)
+			.writeUnsignedByte(length & 255);
+		this.bulle.send(BulleIdentifier.loadLua, p.writeBufBytes(buf));
 	}
 
 	/**

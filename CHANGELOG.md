@@ -3,7 +3,12 @@ This project adheres to [Semantic Versioning (semver)](https://semver.org/spec/v
 
 It is recommended to keep the client up-to-date with latest versions to avoid possible breakage with each update to the game's protocol.
 
-<!--## 1.1.0-beta.1 - Unreleased-->
+<!--
+## 1.1.0-beta.1 - Unreleased
+
+### Changes
+- `Client.loadLua` actually works. It previously did not include the script buffer in its outgoing packets.
+-->
 
 ## 1.0.1 - 2022-07-07
 This release includes some important fixes to run on the latest protocol.
