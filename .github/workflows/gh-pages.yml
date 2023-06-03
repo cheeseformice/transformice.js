@@ -17,11 +17,11 @@ jobs:
           node-version: 16
       - uses: pnpm/action-setup@v2.0.1
         with:
-          version: 6.24.2
+          version: 7.25.1
 
       - name: Installing dependencies
         run: |
-          npm ci
+          pnpm install --frozen-lockfile
 
       - name: Build website
         working-directory: website
