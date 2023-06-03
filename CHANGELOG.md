@@ -3,21 +3,24 @@ This project adheres to [Semantic Versioning (semver)](https://semver.org/spec/v
 It is recommended to keep the client up-to-date with latest versions to avoid possible breakage with each update to the game's protocol.
 
 <!--
-## 1.1.0-beta.1 - Unreleased
+## 1.2.0-beta.1 - Unreleased
+
+### Changes
+-->
+
+## 1.1.0 - 2023-06-03
 This release includes some important fixes to run on the latest protocol.
 
 ### Added
 - `Client`: New event `roomPassworded` is emitted when a room being attempted to enter needs a password.
 
 ### Changes
-- `BREAKING` `Client:` Event `disconnect` will also be emitted when a connection error occurs. It will also include an optional `err` parameter, which will be `null` when the disconnection is client-triggered. 
+- `BREAKING` `Client:` Event `disconnect` will also be emitted when a connection error occurs. It will also include an optional `err` parameter, which will be `null` when the disconnection is client-triggered. ([#4](https://github.com/cheeseformice/transformice.js/issues/4), @Cassolette)
 - Support server updates to room joining. `Client.enterRoom` works again. `BulleIdentifier.roomPassworded` (5,39) is no longer server-bound packet and is replaced by having the password in the `BulleIdentifier.room` (5,38) packet.
 
 ### Fixed
 - Cheeseformice endpoint is dead. Replaced it with a working link and now `Client.fetchIP` works again. 
 - `Client.loadLua` actually works. It previously did not include the script buffer in its outgoing packets.
-
--->
 
 ## 1.0.1 - 2022-07-07
 This release includes some important fixes to run on the latest protocol.

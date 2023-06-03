@@ -27,13 +27,13 @@ git clone https://github.com/cheeseformice/transformice.js
 Install dependencies:
 
 ```
-npm i
+pnpm i
 ```
 
 Watch and compile files:
 
 ```
-npm run dev
+pnpm run dev
 ```
 
 ## Example
