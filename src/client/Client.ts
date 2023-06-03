@@ -398,7 +398,7 @@ class Client extends EventEmitter {
 	 * Get Transformice IP and ports.
 	 */
 	static async fetchIP() {
-		const result = (await got("https://cheese.formice.com/api/tfm/ip", {
+		const result = (await got("https://cheeseformice.github.io/transformice.js/tfmip.json", {
 			timeout: {
 				request: 3000,
 			},
