@@ -130,6 +130,11 @@ class PacketHandler {
 		this.emit("roomChange", this.room, before);
 	}
 
+	static [BulleIdentifier.roomPassworded](this: Client, _conn: Connection, packet: ByteArray) {
+		const name = packet.readUTF();
+		this.emit("roomPassworded", name);
+	}
+
 	static [BulleIdentifier.roomPlayerList](this: Client, _conn: Connection, packet: ByteArray) {
 		const before = this.room.playerList;
 		this.room.playerList = [];

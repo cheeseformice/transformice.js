@@ -5,9 +5,18 @@ It is recommended to keep the client up-to-date with latest versions to avoid po
 
 <!--
 ## 1.1.0-beta.1 - Unreleased
+This release includes some important fixes to run on the latest protocol.
+
+### Added
+- `Client`: new event `roomPassworded` is emitted when a room being attempted to enter needs a password.
 
 ### Changes
+- Support server updates to room joining. `Client.enterRoom` works again. `BulleIdentifier.roomPassworded` (5,39) is no longer server-bound packet and is replaced by having the password in the `BulleIdentifier.room` (5,38) packet.
+
+### Fixed
+- Cheeseformice endpoint is dead. Replaced it with a working link and now `Client.fetchIP` works again. 
 - `Client.loadLua` actually works. It previously did not include the script buffer in its outgoing packets.
+
 -->
 
 ## 1.0.1 - 2022-07-07

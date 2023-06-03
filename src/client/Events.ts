@@ -115,6 +115,10 @@ interface ClientEvents {
 	 */
 	roomChange: (after: Room, before: Room) => void;
 	/**
+	 * Emitted when the room being attempted to enter needs a password.
+	 */
+	roomPassworded: (name: string) => void;
+	/**
 	 * Emitted when the room playerList is updated.
 	 */
 	roomPlayersUpdate: (after: RoomPlayer[], before: RoomPlayer[]) => void;
