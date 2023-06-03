@@ -1,4 +1,3 @@
-# Changelog
 This project adheres to [Semantic Versioning (semver)](https://semver.org/spec/v2.0.0.html).
 
 It is recommended to keep the client up-to-date with latest versions to avoid possible breakage with each update to the game's protocol.

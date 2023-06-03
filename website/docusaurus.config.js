@@ -64,7 +64,7 @@ module.exports = {
 				excludeExternals: true,
 				disableSources: true,
 				plugin: ["typedoc-plugin-no-inherit", "typedoc-plugin-missing-exports"],
-				internalNamespace: "Internal"
+				internalModule: "Internal"
 			}),
 		],
 		require.resolve("@cmfcmf/docusaurus-search-local"),
