@@ -2,6 +2,7 @@ import { BulleIdentifier, Language } from "../enums";
 import Client from "./Client";
 import { Room, RoomMessage, RoomPlayer, Profile } from "../structures";
 import { ByteArray, Connection } from "../utils";
+import { TFMConnectionError } from "./Errors";
 
 /**
  * @hidden
@@ -63,6 +64,7 @@ class PacketHandler {
 		this.bulle = new Connection();
 		this.bulle.on("error", async (err: Error) => {
 			this.emit("bulleConnectionError", err);
+			this.emit("disconnect", new TFMConnectionError("bulle", err.message));
 			if (this.autoReconnect) {
 				this.restart();
 			}
@@ -169,7 +171,11 @@ class PacketHandler {
 		}
 	}
 
-	static [BulleIdentifier.roomPlayerGetCheese](this: Client, _conn: Connection, packet: ByteArray) {
+	static [BulleIdentifier.roomPlayerGetCheese](
+		this: Client,
+		_conn: Connection,
+		packet: ByteArray
+	) {
 		const player = this.room.getPlayer(packet.readInt());
 		if (player) {
 			player.cheeses = packet.readByte();
@@ -178,4 +184,4 @@ class PacketHandler {
 	}
 }
 
-export default (PacketHandler as unknown) as PacketHandlerIndex;
+export default PacketHandler as unknown as PacketHandlerIndex;

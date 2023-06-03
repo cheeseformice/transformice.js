@@ -8,6 +8,7 @@ import PacketHandler from "./PacketHandler";
 import ClientEvents from "./Events";
 import TribullePacketHandler from "./TribullePacketHandler";
 import OldPacketHandler from "./OldPacketHandler";
+import { TFMConnectionError } from "./Errors";
 
 export interface ClientOptions {
 	/**
@@ -300,6 +301,7 @@ class Client extends EventEmitter {
 		});
 		this.main.on("error", async (err: Error) => {
 			this.emit("connectionError", err);
+			this.emit("disconnect", new TFMConnectionError("main", err.message));
 			if (this.autoReconnect) {
 				this.restart();
 			}
@@ -457,8 +459,8 @@ class Client extends EventEmitter {
 		const buf = Buffer.from(script, "utf8");
 		const length = buf.byteLength;
 		const p = new ByteArray()
-			.writeUnsignedByte(length >> 16 & 255)
-			.writeUnsignedByte(length >> 8 & 255)
+			.writeUnsignedByte((length >> 16) & 255)
+			.writeUnsignedByte((length >> 8) & 255)
 			.writeUnsignedByte(length & 255);
 		this.bulle.send(BulleIdentifier.loadLua, p.writeBufBytes(buf));
 	}

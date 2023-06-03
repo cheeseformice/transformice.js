@@ -15,6 +15,7 @@ import {
 	WhisperMessage,
 } from "../structures";
 import { Language } from "../enums";
+import { TFMConnectionError } from "./Errors";
 
 interface ClientEvents {
 	/* -------------------------------------------------------------------------- */
@@ -71,9 +72,9 @@ interface ClientEvents {
 	 */
 	rawTribulle: (code: number, packet: ByteArray) => void;
 	/**
-	 * Emitted when the client has disconnect.
+	 * Emitted when the client has disconnected.
 	 */
-	disconnect: () => void;
+	disconnect: (err?: TFMConnectionError) => void;
 	/**
 	 * Emitted when a connection with the main server is established.
 	 */
