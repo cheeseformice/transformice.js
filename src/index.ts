@@ -1,4 +1,5 @@
 export { default as Client } from "./client";
+export * from "./client";
 export { ByteArray } from "./utils";
 export * from "./identifier";
 export * from "./structures";

@@ -16,6 +16,7 @@ specifiers:
   typedoc-plugin-markdown: 3.15.3
   typedoc-plugin-missing-exports: 2.0.0
   typedoc-plugin-no-inherit: 1.4.0
+  typedoc-plugin-rename-defaults: 0.6.5
   typescript: 5.0.2
 
 dependencies:
@@ -33,6 +34,7 @@ dependencies:
   typedoc-plugin-markdown: 3.15.3_typedoc@0.24.7
   typedoc-plugin-missing-exports: 2.0.0_typedoc@0.24.7
   typedoc-plugin-no-inherit: 1.4.0_typedoc@0.24.7
+  typedoc-plugin-rename-defaults: 0.6.5_typedoc@0.24.7
   typescript: 5.0.2
 
 devDependencies:
@@ -7968,6 +7970,14 @@ packages:
     resolution: {integrity: sha512-cAvqQ8X9xh1xztVoDKtF4nYRSBx9XwttN3OBbNNpA0YaJSRM8XvpVVhugq8FoO1HdWjF3aizS0JzdUOMDt0y9g==}
     peerDependencies:
       typedoc: '>=0.23.0'
+    dependencies:
+      typedoc: 0.24.7_typescript@5.0.2
+    dev: false
+
+  /typedoc-plugin-rename-defaults/0.6.5_typedoc@0.24.7:
+    resolution: {integrity: sha512-DwkgwRMxgu3UrDR3VUAdnF9jYzM6p7rw6UcVIh4MD7yjEmFDR8WWyOlk6oYgELmRYHxTDx0f0GK6iSgoxSh/Qw==}
+    peerDependencies:
+      typedoc: 0.22.x || 0.23.x || 0.24.x
     dependencies:
       typedoc: 0.24.7_typescript@5.0.2
     dev: false

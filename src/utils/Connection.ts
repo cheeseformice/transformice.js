@@ -6,8 +6,6 @@ import { BulleIdentifier } from "../enums";
 
 /**
  * Represents a client that connects to Transformice.
- *
- * @hidden
  */
 export default class Connection extends EventEmitter {
 	socket!: net.Socket;
