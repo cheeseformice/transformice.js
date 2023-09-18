@@ -3,7 +3,17 @@ This project adheres to [Semantic Versioning (semver)](https://semver.org/spec/v
 It is recommended to keep the client up-to-date with latest versions to avoid possible breakage with each update to the game's protocol.
 
 <!--
-## 1.2.0-beta.1 - Unreleased
+## 1.2.1-beta.1 - Unreleased
+
+-->
+
+## 1.2.0 - Unreleased
+
+This release includes some important fixes to run on the latest protocol.
+
+### Added
+- `Profile`: `noSkill` version of profile stats introduced by Transformice v1.691
+- Add `luadev` and `fashionsquad` in Role enum
 
 ### Changes
 - Export `Connection` class.
@@ -16,7 +26,11 @@ if (TFMConnectionError.isThis(castedConnErr)) {
 	console.log(castedConnErr.serverType); // prints "bulle"
 }
 ```
--->
+- `Client`: Removed no-op `languageChange` event
+- `Profile`: `Profile.role` is now a `Role` type enum rather than just a number.
+
+### Fixed
+- Fixed `Profile` packed parsing offsets.
 
 ## 1.1.0 - 2023-06-03
 This release includes some important fixes to run on the latest protocol.

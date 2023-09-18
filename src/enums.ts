@@ -5,7 +5,7 @@ import { Identifier } from "./identifier";
  *
  * @hidden
  * */
- export enum BulleIdentifier {
+export enum BulleIdentifier {
 	oldPacket = Identifier(1, 1),
 	bulle = Identifier(60, 3),
 	bulleConnection = Identifier(44, 1),
@@ -322,7 +322,9 @@ export enum Role {
 	moderator = 5,
 	administrator = 10,
 	mapcrew = 11,
+	luadev = 12,
 	funcorp = 13,
+	fashionsquad = 15,
 }
 
 /** The ids of all the room modes. */

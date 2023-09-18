@@ -53,7 +53,13 @@ client.on("roomMessage", (message) => {
 client.run();
 ```
 
-## Similar projects
+## Acknowledgements
+
+* Thanks [Owl](https://github.com/SuspiciousLookingOwl) for pioneering the bulk of Transformice.js.
+* Thanks to Athes for [detfm](https://github.com/Athesdrake/detfm). I no longer have to read garbled nonsense to get the packet structure.
+* Thanks to [friedkeenan](https://github.com/friedkeenan) for maintaining the exhaustive packet documentation in [caseus](https://github.com/friedkeenan/caseus). Saves me the manual labour needing to sherlock holmes those myself.
+
+### Similar projects
 
 If you would like a different flavor to write your bot in, you may check out the other similar Transformice clients:
 

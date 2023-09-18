@@ -14,7 +14,6 @@ import {
 	TribullePlayer,
 	WhisperMessage,
 } from "../structures";
-import { Language } from "../enums";
 import { TFMConnectionError } from "./Errors";
 
 interface ClientEvents {
@@ -58,15 +57,6 @@ interface ClientEvents {
 	 * Emitted when a new packet received from main or bulle connection.
 	 */
 	rawPacket: (conn: Connection, ccc: number, packet: ByteArray) => void;
-	/**
-	 * Emitted when a language is changed.characters or not.
-	 */
-	languageChange: (
-		language: Language,
-		country: string,
-		readRight: boolean,
-		readSpecialChar: boolean
-	) => void;
 	/**
 	 * Emitted when a new community platform packet received.
 	 */

@@ -1,5 +1,5 @@
 import { ByteArray } from "../utils";
-import { Gender } from "../enums";
+import { Gender, Role } from "../enums";
 import Client from "../client";
 import { Player } from ".";
 
@@ -8,13 +8,16 @@ export default class Profile extends Player {
 	id!: number;
 	gender!: Gender;
 	registrationDate!: number;
-	role!: number;
+	role!: Role;
 	tribeName!: string;
 	soulmate!: string;
 	saves!: {
 		normal: number;
+		normalNoSkill: number;
 		hard: number;
+		hardNoSkill: number;
 		divine: number;
+		divineNoSkill: number;
 	};
 	shamanCheese!: number;
 	first!: number;
@@ -72,11 +75,17 @@ export default class Profile extends Player {
 		const hard = packet.readInt();
 		this.bootcamp = packet.readInt();
 		const divine = packet.readInt();
+		const normalNoSkill = packet.readInt();
+		const hardNoSkill = packet.readInt();
+		const divineNoSkill = packet.readInt();
 
 		this.saves = {
 			normal,
 			hard,
 			divine,
+			normalNoSkill,
+			hardNoSkill,
+			divineNoSkill
 		};
 
 		this.titleId = packet.readShort();
