@@ -15,7 +15,7 @@ export interface ClientOptions {
 	 */
 	autoReconnect?: boolean;
 	/**
-	 * Which community to log in to ([language enum](/docs/api/globals#languages))
+	 * Which community to log in to
 	 */
 	language?: Language;
 	/**
