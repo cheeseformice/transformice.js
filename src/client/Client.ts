@@ -1,4 +1,3 @@
-import got from "got";
 import { EventEmitter } from "events";
 
 import { ByteArray, Connection, SHAKikoo } from "../utils";
@@ -400,11 +399,7 @@ class Client extends EventEmitter {
 	 * Get Transformice IP and ports.
 	 */
 	static async fetchIP() {
-		const result = (await got("https://cheeseformice.github.io/transformice.js/tfmip.json", {
-			timeout: {
-				request: 3000,
-			},
-		}).json()) as
+		let result:
 			| { success: false; error: string }
 			| {
 					success: true;
@@ -419,6 +414,17 @@ class Client extends EventEmitter {
 						ports: number[];
 					};
 			  };
+		{
+			const controller = new AbortController();
+			const id = setTimeout(() => controller.abort(), 3000);
+			result = await (
+				await fetch("https://cheeseformice.github.io/transformice.js/tfmip.json", {
+					signal: controller.signal,
+				})
+			).json();
+			clearTimeout(id);
+		}
+
 		if (result.success) {
 			if (!result.internal_error) {
 				return {
