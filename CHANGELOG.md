@@ -7,7 +7,7 @@ It is recommended to keep the client up-to-date with latest versions to avoid po
 
 -->
 
-## 1.2.0 - Unreleased
+## 1.2.0 - 2024-05-02
 
 This release includes some important fixes to run on the latest protocol.
 
@@ -16,6 +16,7 @@ This release includes some important fixes to run on the latest protocol.
 - Add `luadev` and `fashionsquad` in Role enum
 
 ### Changes
+- `BREAKING` `Client`: Switched to native fetch API for `Client.fetchIP` in favour of less dependencies. Requires Node 18 or higher. 
 - Export `Connection` class.
 - Export `TFMConnectionError` class. Added `TFMConnectionError.isThis(payload: any)` static method to narrow error types.
 ```ts
