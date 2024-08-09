@@ -77,6 +77,8 @@ declare interface Client {
 	 */
 	on<T extends keyof ClientEvents>(event: T, listener: ClientEvents[T]): this;
 	/** @hidden */
+	once<T extends keyof ClientEvents>(event: T, listener: ClientEvents[T]): this;
+	/** @hidden */
 	emit<T extends keyof ClientEvents>(event: T, ...args: Parameters<ClientEvents[T]>): boolean;
 }
 
