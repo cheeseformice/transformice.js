@@ -1,6 +1,6 @@
 {
 	"name": "@cheeseformice/transformice.js",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "Node.js client for Transformice with full Typescript support.",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -16,7 +16,10 @@
 		"url": "git+https://github.com/Cheeseformice/transformice.js.git"
 	},
 	"keywords": [
-		"transformice"
+		"transformice",
+		"tfm",
+		"client",
+		"bot"
 	],
 	"author": "SuspiciousLookingOwl",
 	"license": "MIT",
