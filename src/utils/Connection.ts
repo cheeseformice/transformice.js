@@ -40,11 +40,11 @@ export default class Connection extends EventEmitter {
 
 		this.socket.on("data", (data) => {
 			this.buffer = Buffer.concat([this.buffer, data]);
-			while (this.buffer.length > this.length) {
+			while (this.buffer.length > 0 && this.buffer.length >= this.length) {
 				if (this.length === 0) {
 					for (let i = 0; i < 5; i++) {
-						const byte = this.buffer.slice(0, 1)[0];
-						this.buffer = this.buffer.slice(1);
+						const byte = this.buffer.subarray(0, 1)[0];
+						this.buffer = this.buffer.subarray(1);
 						this.length |= (byte & 127) << (i * 7);
 
 						if (!(byte & 0x80)) break;
@@ -52,8 +52,8 @@ export default class Connection extends EventEmitter {
 				}
 
 				if (this.buffer.length >= this.length) {
-					this.emit("data", this, new ByteArray(this.buffer.slice(0, this.length)));
-					this.buffer = this.buffer.slice(this.length);
+					this.emit("data", this, new ByteArray(this.buffer.subarray(0, this.length)));
+					this.buffer = this.buffer.subarray(this.length);
 					this.length = 0;
 				}
 			}
