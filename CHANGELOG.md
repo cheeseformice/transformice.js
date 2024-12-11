@@ -10,7 +10,7 @@ It is recommended to keep the client up-to-date with latest versions to avoid po
 ## 1.2.1 - 2024-12-12
 
 ### Fixed
-- Fixed larger segmented packets not being able to dispatch on the spot, in some scenarios. ([#6](https://github.com/cheeseformice/transformice.js/issues/6)
+- Fixed larger segmented packets not being able to dispatch on the spot, in some scenarios. ([#6](https://github.com/cheeseformice/transformice.js/issues/6), @Cassolette)
 
 ## 1.2.0 - 2024-05-02
 
