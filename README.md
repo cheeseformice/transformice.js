@@ -5,16 +5,13 @@ Transformice.js is a [Node.js](https://nodejs.org) Client for Transformice that 
 - [Read the docs](https://cheeseformice.github.io/transformice.js/)
 - [Read the changelogs](https://github.com/cheeseformice/transformice.js/blob/main/CHANGELOG.md)
 
-Transformice.js is originally created and maintained by [SuspiciousLookingOwl](https://github.com/SuspiciousLookingOwl/transformice.js). This is the maintained continuation on Cheeseformice.
+Transformice.js was originally created by [SuspiciousLookingOwl](https://github.com/SuspiciousLookingOwl/transformice.js). It is currently being maintained on Cheeseformice.
 
 ## Authentication
 
-To use this client, you must have an authenticated account in-game. You will need to [apply on this form](https://forms.gle/N6Et1hLGQ9hmg95F6). If you get accepted, you will be able to choose an account (except your main account) to get the _bot role_ - and thus, being able to use the client.
+To use this client, you must log in with an approved in-game bot account. Bot account [applications](https://forms.gle/N6Et1hLGQ9hmg95F6) are closed indefinitely. There is no formal task force to manage such applications at the moment, however if you have a project in need of a bot account, please feel free to reach out to a member of the Module Team or myself on the Atelier 801 forums.
 
-See below to know the names of Transfromage managers who handle the token system.
-- **[Tocutoeltuco](https://github.com/Tocutoeltuco)** @discord=> `Tocu#0018` <sub>`212634414021214209`</sub>;
-- **[Blank3495](https://github.com/Blank3495)** @discord=> `󠂪󠂪 󠂪󠂪 󠂪󠂪󠂪󠂪 󠂪󠂪 󠂪󠂪󠂪󠂪 󠂪󠂪 󠂪󠂪#8737` <sub>`436703225140346881`</sub>;
-- **[Bolodefchoco](https://github.com/Lautenschlager-id)** @discord=> `Lautenschlager#2555` <sub>`285878295759814656`</sub>.
+Please note that we will only consider legitimate use cases that provide value-add to the game and will not entertain bots solely for personal use. Final approval is subject to higher decision-making.
 
 ## Development
 
