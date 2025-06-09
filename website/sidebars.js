@@ -4,7 +4,7 @@ module.exports = {
 		{
 			type: "category",
 			label: "General",
-			items: ["quickstart"],
+			items: ["quickstart", "extending-functions"],
 		},
 		{
 			type: "category",

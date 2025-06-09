@@ -3,11 +3,19 @@ This project adheres to [Semantic Versioning (semver)](https://semver.org/spec/v
 It is recommended to keep the client up-to-date with latest versions to avoid possible breakage with each update to the game's protocol.
 
 <!--
-## 1.2.2-beta.1 - Unreleased
+## 1.2.3-beta.1 - Unreleased
 
 -->
 
+## 1.2.2 - Unreleased
+
+### Changes
+- Adds `arbitre` to Role enum
+- Bulle connection ports are randomized
+
 ## 1.2.1 - 2024-12-12
+
+This release includes some important fixes to core code.
 
 ### Fixed
 - Fixed larger segmented packets not being able to dispatch on the spot, in some scenarios. ([#6](https://github.com/cheeseformice/transformice.js/issues/6), @Cassolette)
