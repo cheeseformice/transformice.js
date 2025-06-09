@@ -319,6 +319,7 @@ export enum Gender {
 /** The ids of all the staff roles. */
 export enum Role {
 	normal = 0,
+	arbitre = 3,
 	moderator = 5,
 	administrator = 10,
 	mapcrew = 11,
