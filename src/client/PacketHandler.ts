@@ -54,7 +54,7 @@ class PacketHandler {
 		const playerId = packet.readUnsignedInt();
 		const pcode = packet.readUnsignedInt();
 		const host = packet.readUTF();
-		packet
+		const ports = packet
 			.readUTF()
 			.split("-")
 			.map((port) => ~~port); // port
@@ -82,7 +82,7 @@ class PacketHandler {
 					.writeUnsignedInt(pcode)
 			);
 		});
-		this.bulle.connect(host, this.ports[0]);
+		this.bulle.connect(host, ports[~~(Math.random() * ports.length)]);
 	}
 
 	static [BulleIdentifier.profile](this: Client, _conn: Connection, packet: ByteArray) {
